@@ -1,0 +1,10 @@
+[user]
+	name = Antoine Hebert
+	email = hebert.antoine@gmail.com
+[alias]
+	st = status
+	co = checkout
+	ci = commit
+	last = log -1 HEAD
+	lol = log --oneline --graph --decorate --color
+	pushg = push origin HEAD:refs/for/master
