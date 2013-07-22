@@ -47,7 +47,7 @@ function git_prompt() {
 
 # Only show username/host if not default
 function usernamehost() {
-	if [ $USER != $default_username ]; then echo "${fmagenta}$USER@$HOSTNAME${reset} "; fi
+	if [ $USER != $default_username ]; then echo "$USER "; fi
 }
 
-PS1="\[$fblue\]\$(git_prompt)\[$reset\]\W \[$fcyan\]➜\[$reset\] "
+PS1="\[$fred\]\$(usernamehost)\[$reset\]\[$fblue\]\$(git_prompt)\[$reset\]\W \[$fcyan\]➜\[$reset\] "
