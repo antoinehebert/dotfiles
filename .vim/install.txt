@@ -1,0 +1,6 @@
+to use under windows
+********************
+cd \Users\<user name>
+mklink /d vimfiles vim-config
+mklink _vimrc vim-config\vimrc
+

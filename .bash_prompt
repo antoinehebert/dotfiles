@@ -1,0 +1,85 @@
+default_username='ahebert'
+
+# shell color
+fblack=$(tput setaf 0)
+fred=$(tput setaf 1)
+fgreen=$(tput setaf 2)
+fyellow=$(tput setaf 3)
+fblue=$(tput setaf 4)
+fmagenta=$(tput setaf 5)
+fcyan=$(tput setaf 6)
+fwhite=$(tput setaf 7)
+fdefault=$(tput setaf 9)
+bblack=$(tput setab 0)
+bred=$(tput setab 1)
+bgreen=$(tput setab 2)
+byellow=$(tput setab 3)
+bblue=$(tput setab 4)
+bmagenta=$(tput setab 5)
+bcyan=$(tput setab 6)
+bwhite=$(tput setab 7)
+bdefault=$(tput setab 9)
+reset=$(tput sgr0)
+
+function echo_checkmark() {
+   echo -e "\u2713"
+}
+function echo_xmark() {
+   echo -e "\u2717"
+}
+
+function svn_prompt() {  
+   # change color based on status? Slow on big repos so might be cool to turn off
+   # sometimes...
+   svn_show_dirty=1
+   svn_prompt=""
+
+   if $(svn info > /dev/null 2>&1); then
+      svn_dirty=""
+      if [ "$svn_show_dirty" == "1" ]; then
+         if $(svn status|grep -E '^\s*[ACDIM!L]' >/dev/null 2>&1); then
+            svn_dirty="$(echo_xmark)"
+         else
+            svn_dirty="$(echo_checkmark)"
+         fi
+      fi
+      # opto uses branch/folder/branch_name
+      branch=$(svn info | grep '^URL:' | egrep -o '(tags|branches)/[^/]+/[^/]+|dev' | egrep -o '[^/]+$')
+      svn_prompt="$branch $svn_dirty "
+   fi
+   
+   #export PS1="$svn_prompt\W \[$fcyan\]->\[$reset\] "
+   if [ -n "$svn_prompt" ]; then
+      echo -n "$svn_prompt "
+   fi
+   
+   unset svn_show_dirty
+   unset svn_prompt
+   unset svn_color_txt
+   unset branch
+
+}
+
+# GIT
+# Fastest possible way to check if repo is dirty. a savior for the WebKit repo.
+function parse_git_dirty() {
+   if [[ -n $(git diff --quiet --ignore-submodules HEAD &>/dev/null; [ $? -eq 1 ] && echo "1") ]]; then
+      echo_xmark
+   else
+      echo_checkmark
+   fi
+}
+
+function git_prompt() {
+   if [[ -n $(git branch 2> /dev/null) ]]; then 
+      echo -n $(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1/")
+      echo -n " $(parse_git_dirty) "
+   fi
+}
+
+# Only show username/host if not default
+function usernamehost() {
+	if [ $USER != $default_username ]; then echo "${fmagenta}$USER@$HOSTNAME${reset} "; fi
+}
+
+PS1="\[$fblue\]\$(svn_prompt)\$(git_prompt)\[$reset\]\W \[$fcyan\]➜\[$reset\] "

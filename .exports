@@ -1,0 +1,3 @@
+# SVN Editor
+export EDITOR=emacs
+export MAKEFLAGS=-j3
