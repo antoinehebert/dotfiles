@@ -7,4 +7,6 @@
 	ci = commit
 	last = log -1 HEAD
 	lol = log --oneline --graph --decorate --color
+   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 	pushg = push origin HEAD:refs/for/master
+   df = diff --color --color-words --abbrev
