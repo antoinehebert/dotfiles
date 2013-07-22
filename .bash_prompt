@@ -28,38 +28,6 @@ function echo_xmark() {
    echo -e "\u2717"
 }
 
-function svn_prompt() {  
-   # change color based on status? Slow on big repos so might be cool to turn off
-   # sometimes...
-   svn_show_dirty=1
-   svn_prompt=""
-
-   if $(svn info > /dev/null 2>&1); then
-      svn_dirty=""
-      if [ "$svn_show_dirty" == "1" ]; then
-         if $(svn status|grep -E '^\s*[ACDIM!L]' >/dev/null 2>&1); then
-            svn_dirty="$(echo_xmark)"
-         else
-            svn_dirty="$(echo_checkmark)"
-         fi
-      fi
-      # opto uses branch/folder/branch_name
-      branch=$(svn info | grep '^URL:' | egrep -o '(tags|branches)/[^/]+/[^/]+|dev' | egrep -o '[^/]+$')
-      svn_prompt="$branch $svn_dirty "
-   fi
-   
-   #export PS1="$svn_prompt\W \[$fcyan\]->\[$reset\] "
-   if [ -n "$svn_prompt" ]; then
-      echo -n "$svn_prompt "
-   fi
-   
-   unset svn_show_dirty
-   unset svn_prompt
-   unset svn_color_txt
-   unset branch
-
-}
-
 # GIT
 # Fastest possible way to check if repo is dirty. a savior for the WebKit repo.
 function parse_git_dirty() {
@@ -82,4 +50,4 @@ function usernamehost() {
 	if [ $USER != $default_username ]; then echo "${fmagenta}$USER@$HOSTNAME${reset} "; fi
 }
 
-PS1="\[$fblue\]\$(svn_prompt)\$(git_prompt)\[$reset\]\W \[$fcyan\]➜\[$reset\] "
+PS1="\[$fblue\]\$(git_prompt)\[$reset\]\W \[$fcyan\]➜\[$reset\] "
