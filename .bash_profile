@@ -6,8 +6,8 @@ done
 unset file
 
 # node, nvm & npm
-if [ -r ~/software/nvm/nvm.sh ]; then
-  source ~/software/nvm/nvm.sh
+if [ -r ~/.nvm/nvm.sh ]; then
+  source ~/.nvm/nvm.sh
   source ${NVM_DIR}/bash_completion
   . <(npm completion)
 fi
