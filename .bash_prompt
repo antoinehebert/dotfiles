@@ -22,10 +22,10 @@ bdefault=$(tput setab 9)
 reset=$(tput sgr0)
 
 function echo_checkmark() {
-   echo -e "\u2713"
+   echo -e "✓"
 }
 function echo_xmark() {
-   echo -e "\u2717"
+   echo -e "✗"
 }
 
 # GIT
