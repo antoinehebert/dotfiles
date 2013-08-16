@@ -1,4 +1,4 @@
-default_username='ahebert'
+default_username="^(ahebert|t00ny)$"
 
 # shell color
 fblack=$(tput setaf 0)
@@ -21,20 +21,13 @@ bwhite=$(tput setab 7)
 bdefault=$(tput setab 9)
 reset=$(tput sgr0)
 
-function echo_checkmark() {
-   echo -e "✓"
-}
-function echo_xmark() {
-   echo -e "✗"
-}
-
 # GIT
 # Fastest possible way to check if repo is dirty. a savior for the WebKit repo.
 function parse_git_dirty() {
    if [[ -n $(git diff --quiet --ignore-submodules HEAD &>/dev/null; [ $? -eq 1 ] && echo "1") ]]; then
-      echo_xmark
+      echo -e "✗"
    else
-      echo_checkmark
+      echo -e "✓"
    fi
 }
 
@@ -47,7 +40,7 @@ function git_prompt() {
 
 # Only show username/host if not default
 function usernamehost() {
-	if [ $USER != $default_username ]; then echo "$USER "; fi
+	if ! [[ $USER =~ $default_username ]]; then echo "$USER "; fi
 }
 
 PS1="\[$fred\]\$(usernamehost)\[$reset\]\[$fblue\]\$(git_prompt)\[$reset\]\W \[$fcyan\]➜\[$reset\] "
