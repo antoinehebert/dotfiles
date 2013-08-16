@@ -15,4 +15,4 @@ cd dotfiles
 ./sync.sh
 ```
 
-To update later on, just run sync.sh again.
+To update later on, just run `sync.sh` again.
