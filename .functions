@@ -96,3 +96,22 @@ gifify() {
   fi
 }
 
+# hop sftp|ssh|scp through a server
+hop() {
+  cmd_regex="^(ssh|scp|sftp)$" 
+  if [[ "$1" == "-h" || "$1" == "-?" || ! "$1" =~ $cmd_regex ]]; then
+    echo "usage: hop command server1 server2"
+    echo ""
+    echo "command can be ssh scp or sftp"
+    echo "example:"
+    echo "$ hop sftp root@evelocity-test root@30A02P"
+    echo "$ hop scp root@evelocity-test root@30A02P:/opt/opto/data/optoscreener/DirectoryToMonitor/*.sr ."
+    return 0
+  fi
+  cmd=$1
+  man_in_the_middle=$2
+  shift 2
+  # 60 here is the timeout in seconds
+  $cmd -o ProxyCommand="ssh $man_in_the_middle nc -w 60 %h %p" $@
+}
+
