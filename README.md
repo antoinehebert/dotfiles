@@ -6,6 +6,10 @@ My .files. Heavily inspired by
 ## Basic dependencies setup
 
 Use `install_deps.sh` to install [z](https://github.com/rupa/z), pygments, etc.
+install:
+- gvim
+- emacs
+- git
 
 ## Installation
 
