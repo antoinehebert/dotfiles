@@ -10,7 +10,7 @@ git clone https://github.com/rupa/z.git
 chmod +x ~/bin/z/z.sh
 
 # for the c alias (syntax highlighted cat)
-sudo easy_install Pygments
+sudo pip install Pygments
 
 # source my stuff
 echo '[ -n "$PS1" ] && source ~/.bash_profile' >> ~/.bashrc
