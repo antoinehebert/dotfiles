@@ -38,9 +38,29 @@ function git_prompt() {
    fi
 }
 
+# SVN
+function svn_prompt() {
+   # change color based on status? Slow on big repos so might be cool to turn off
+   # sometimes...
+   if $(svn info > /dev/null 2>&1); then
+      # branch name
+      echo -n "$(svn info | grep '^URL:' | egrep -o 'trunk|(branches|tags)/[^/]*') "
+
+      # dirty?
+      if $(svn status|grep -E '^\s*[ACDIM!L]' >/dev/null 2>&1); then
+         echo -e "✗ "
+      else
+         echo -e "✓ "
+      fi
+
+      echo
+   fi
+}
+
+
 # Only show username/host if not default
 function usernamehost() {
 	if ! [[ $USER =~ $default_username ]]; then echo "$USER "; fi
 }
 
-PS1="\[$fred\]\$(usernamehost)\[$reset\]\[$fblue\]\$(git_prompt)\[$reset\]\W \[$fcyan\]➜\[$reset\] "
+PS1="\[$fred\]\$(usernamehost)\[$reset\]\[$fblue\]\$(git_prompt)\$(svn_prompt)\[$reset\]\W \[$fcyan\]➜\[$reset\] "
