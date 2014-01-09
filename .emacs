@@ -91,7 +91,7 @@
 
 Move point to the first non-whitespace character on this line.
 If point was already at that position, move point to beginning of line."
-  (interactive) ; Use (interactive "^") in Emacs 23 to make shift-select work
+  (interactive "^") ; Use (interactive "^") in Emacs 23 to make shift-select work
   (let ((oldpos (point)))
     (back-to-indentation)
     (and (= oldpos (point))
