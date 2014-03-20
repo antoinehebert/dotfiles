@@ -63,4 +63,4 @@ function usernamehost() {
 	if ! [[ $USER =~ $default_username ]]; then echo "$USER "; fi
 }
 
-PS1="\[$fred\]\$(usernamehost)\[$reset\]\[$fblue\]\$(git_prompt)\$(svn_prompt)\[$reset\]\W \[$fcyan\]➜\[$reset\] "
+PS1="\[$fred\]\$(usernamehost)\[$reset\]\[$fblue\]\$(git_prompt)\$(svn_prompt)\[$reset\]\W \[$fcyan\]→\[$reset\] "
