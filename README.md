@@ -20,3 +20,6 @@ cd dotfiles
 ```
 
 To update later on, just run `sync.sh` again.
+
+## Troubleshooting
+If this is not working you might have to source the `.bash_profile` in `.bashrc`.
