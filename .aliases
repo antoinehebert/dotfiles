@@ -1,5 +1,3 @@
-#alias subl="~/software/SublimeText2/sublime_text"
-alias subl="~/software/sublime_text_3/sublime_text"
 # cat with beautiful colors
 alias c='pygmentize -O style=monokai -f console256 -g'
 alias ll='ls -la'
