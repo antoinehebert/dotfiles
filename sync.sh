@@ -16,7 +16,7 @@ fi
 unset doIt
 
 if [ $(egrep "(source|\.) ~/.bash_profile" ~/.bashrc | wc -l) -eq 0 ]; then
-   echo [ -n "$PS1" ] && source ~/.bash_profile >> .bashrc
+   echo [ -n "$PS1" ] && source ~/.bash_profile >> ~/.bashrc
 fi
 
 source ~/.bash_profile
