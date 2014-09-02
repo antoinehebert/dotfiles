@@ -13,7 +13,7 @@ if [ -r ~/.nvm/nvm.sh ]; then
 fi
 
 # rbenv setup
-if [ -r $HOME/.rbenv/bin ]; then
+if [ -r $HOME/.rbenv/bin -o -r /usr/local/bin/rbenv ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"
   eval "$(rbenv init -)"
 fi
