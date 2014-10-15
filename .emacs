@@ -33,6 +33,7 @@
 (setq tab-width 3)
 (tool-bar-mode -1)
 (setq inhibit-startup-message t) ;; stop showing emacs welcome screen
+(setq case-fold-search t)   ; make searches case insensitive
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ahebert custom commands
