@@ -78,6 +78,25 @@
 (global-set-key (kbd "C-S-<up>") 'move-line-up)
 (global-set-key (kbd "C-S-<down>") 'move-line-down)
 
+(defun vi-open-line-above ()
+  "Insert a newline above the current line and put point at beginning."
+  (interactive)
+  (unless (bolp)
+    (beginning-of-line))
+  (newline)
+  (forward-line -1)
+  (indent-according-to-mode))
+
+(defun vi-open-line-below ()
+  "Insert a newline below the current line and put point at beginning."
+  (interactive)
+  (unless (eolp)
+    (end-of-line))
+  (newline-and-indent))
+
+(global-set-key (kbd "C-<return>") 'vi-open-line-below)
+(global-set-key (kbd "C-S-<return>") 'vi-open-line-above)
+
 (global-set-key (kbd "C-<tab>") 'ff-find-related-file)
 
 (defun my-org-mode-hook()
