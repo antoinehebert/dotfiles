@@ -118,3 +118,5 @@ If point was already at that position, move point to beginning of line."
          (beginning-of-line))))
 
 (global-set-key [home] 'smart-beginning-of-line)
+(global-set-key [end] 'move-end-of-line)
+(global-set-key (kbd "C-a") 'smart-beginning-of-line)
