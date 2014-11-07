@@ -36,6 +36,10 @@
 (setq inhibit-startup-message t) ;; stop showing emacs welcome screen
 (setq case-fold-search t)   ; make searches case insensitive
 
+;; Add /usr/tex for org-mode export to PDF on the Mac
+(if (eq system-type 'darwin)
+    (setenv "PATH" (concat (getenv "PATH") ":/usr/texbin"))
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ahebert custom commands
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
