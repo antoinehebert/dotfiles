@@ -45,12 +45,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun increment-number-at-point ()
   (interactive)
-  (skip-chars-backward "0123456789")
-  (or (looking-at "[0123456789]+")
-      (error "No number at point"))
-  (replace-match (number-to-string (1+ (string-to-number (match-string 0)))))
+  (let ((col (current-column)))
+    (skip-chars-backward "0123456789")
+    (or (looking-at "[0123456789]+")
+        (error "No number at point"))
+    (replace-match (number-to-string (1+ (string-to-number (match-string 0)))))
+    (move-to-column col))
   )
-(global-set-key (kbd "C-+") 'increment-number-at-point)
+;; TODO: refactor to reuse common code...
+(defun decrement-number-at-point ()
+  (interactive)
+  (let ((col (current-column)))
+    (skip-chars-backward "0123456789")
+    (or (looking-at "[0123456789]+")
+        (error "No number at point"))
+    (replace-match (number-to-string (1- (string-to-number (match-string 0)))))
+    (move-to-column col))
+  )
+(global-set-key (kbd "C-c a") 'increment-number-at-point)
+(global-set-key (kbd "C-c A") 'decrement-number-at-point)
 
 (defun duplicate-line()
   (interactive)
@@ -63,7 +76,7 @@
     (yank)
     (move-to-column col))
   )
-(global-set-key (kbd "C-S-d") 'duplicate-line)
+(global-set-key (kbd "C-c d") 'duplicate-line)
 
 (defun move-line-up()
   (interactive)
@@ -80,8 +93,8 @@
       (previous-line 1)
       (move-to-column col))
   )
-(global-set-key (kbd "C-S-<up>") 'move-line-up)
-(global-set-key (kbd "C-S-<down>") 'move-line-down)
+(global-set-key (kbd "C-c k") 'move-line-up)
+(global-set-key (kbd "C-c j") 'move-line-down)
 
 (defun vi-open-line-above ()
   "Insert a newline above the current line and put point at beginning."
@@ -99,10 +112,10 @@
     (end-of-line))
   (newline-and-indent))
 
-(global-set-key (kbd "C-<return>") 'vi-open-line-below)
-(global-set-key (kbd "C-S-<return>") 'vi-open-line-above)
+(global-set-key (kbd "C-c o") 'vi-open-line-below)
+(global-set-key (kbd "C-c O") 'vi-open-line-above)
 
-(global-set-key (kbd "C-<tab>") 'ff-find-related-file)
+(global-set-key (kbd "C-c f") 'ff-find-related-file)
 
 (defun my-org-mode-hook()
   (org-indent-mode 1)
