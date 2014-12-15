@@ -10,11 +10,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ahebert variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq c-basic-offset 3)
+(setq c-basic-offset 4)
 (setq c-default-style (quote ((c++-mode . "bsd") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
 (setq column-number-mode t)
 (setq compile-command "make -C /home/ahebert/projects/MDI/builddev/AMD64_RELEASE -j3")
-(setq css-indent-offset 3)
+(setq css-indent-offset 4)
 (delete-selection-mode 1)
 (electric-indent-mode 1)
 (electric-pair-mode 1)
@@ -24,14 +24,14 @@
 (ido-mode 1)
 ;; note we use setq-default
 (setq-default indent-tabs-mode nil)
-(setq js-indent-level 3)
+(setq js-indent-level 4)
 (setq mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
 (setq python-continuation-offset 4)
 (setq python-indent 4)
-(setq sgml-basic-offset 3)
+(setq sgml-basic-offset 4)
 (show-paren-mode 1)
-(setq standard-indent 3)
-(setq tab-width 3)
+(setq standard-indent 4)
+(setq tab-width 4)
 (tool-bar-mode -1)
 (setq inhibit-startup-message t) ;; stop showing emacs welcome screen
 (setq case-fold-search t)   ; make searches case insensitive
