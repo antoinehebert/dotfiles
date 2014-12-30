@@ -28,7 +28,7 @@
 (setq mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
 (setq python-continuation-offset 4)
 (setq python-indent 4)
-(setq sgml-basic-offset 4)
+(setq sgml-basic-offset 2)
 (show-paren-mode 1)
 (setq standard-indent 4)
 (setq tab-width 4)
