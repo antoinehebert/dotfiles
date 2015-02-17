@@ -40,6 +40,9 @@
 (if (eq system-type 'darwin)
     (setenv "PATH" (concat (getenv "PATH") ":/usr/texbin"))
 )
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ahebert custom commands
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
