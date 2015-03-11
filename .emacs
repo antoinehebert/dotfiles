@@ -41,9 +41,9 @@
     (setenv "PATH" (concat (getenv "PATH") ":/usr/texbin"))
 )
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; packages
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
@@ -51,6 +51,24 @@
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
+
+(defvar user-packages
+  '(
+    haskell-mode
+    wrap-region
+    monokai-theme))
+
+(defun ah/install-packages ()
+  "You know... install packages."
+  (interactive)
+  (dolist (p user-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))
+
+(ah/install-packages)
+
+(wrap-region-global-mode t)
+(load-theme 'monokai t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ahebert custom commands
