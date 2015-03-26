@@ -56,7 +56,8 @@
   '(
     haskell-mode
     wrap-region
-    monokai-theme))
+    monokai-theme
+    multiple-cursors))
 
 (defun ah/install-packages ()
   "You know... install packages."
@@ -69,6 +70,12 @@
 
 (wrap-region-global-mode t)
 (load-theme 'monokai t)
+
+(require 'multiple-cursors)
+(global-set-key (kbd "C-c c") 'mc/edit-lines)
+(global-set-key (kbd "C-c n") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c p") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c m") 'mc/mark-all-like-this)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ahebert custom commands
@@ -174,3 +181,4 @@ If point was already at that position, move point to beginning of line."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
