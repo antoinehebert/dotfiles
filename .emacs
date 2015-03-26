@@ -73,11 +73,12 @@
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c c") 'mc/edit-lines)
-(global-set-key (kbd "C-c N") 'mc/mark-next-word-like-this)
 (global-set-key (kbd "C-c n") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c P") 'mc/mark-previous-word-like-this)
+(global-set-key (kbd "C-c N") 'mc/skip-to-next-like-this)
 (global-set-key (kbd "C-c p") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c P") 'mc/skip-to-previous-like-this)
 (global-set-key (kbd "C-c m") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ahebert custom commands
