@@ -10,3 +10,5 @@ fi
 
 alias ls='ls ${colorflag}'
 alias ll='ls -la ${colorflag}'
+
+alias svnnew="svn st | egrep '^\?' | tr -d ?"
