@@ -73,8 +73,10 @@
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c c") 'mc/edit-lines)
-(global-set-key (kbd "C-c n") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c p") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c n") 'mc/mark-next-word-like-this)
+(global-set-key (kbd "C-c N") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c p") 'mc/mark-previous-word-like-this)
+(global-set-key (kbd "C-c P") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c m") 'mc/mark-all-like-this)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
