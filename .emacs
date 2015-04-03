@@ -57,7 +57,8 @@
     haskell-mode
     wrap-region
     monokai-theme
-    multiple-cursors))
+    multiple-cursors
+    auto-complete))
 
 (defun ah/install-packages ()
   "You know... install packages."
@@ -79,6 +80,9 @@
 (global-set-key (kbd "C-c P") 'mc/skip-to-previous-like-this)
 (global-set-key (kbd "C-c m") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+
+(require 'auto-complete-config)
+(ac-config-default)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ahebert custom commands
