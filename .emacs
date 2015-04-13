@@ -58,7 +58,8 @@
     wrap-region
     monokai-theme
     multiple-cursors
-    auto-complete))
+    auto-complete
+    yaml-mode))
 
 (defun ah/install-packages ()
   "You know... install packages."
@@ -66,7 +67,6 @@
   (dolist (p user-packages)
     (when (not (package-installed-p p))
       (package-install p))))
-
 (ah/install-packages)
 
 (wrap-region-global-mode t)
@@ -83,6 +83,9 @@
 
 (require 'auto-complete-config)
 (ac-config-default)
+
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ahebert custom commands
