@@ -58,8 +58,16 @@
     wrap-region
     monokai-theme
     multiple-cursors
-    auto-complete
-    yaml-mode))
+    ;;auto-complete
+    company
+    yaml-mode
+    projectile
+    flx-ido
+    ;; ruby on rails packages
+    projectile-rails
+    flymake-ruby
+    rbenv
+    robe))
 
 (defun ah/install-packages ()
   "You know... install packages."
@@ -70,6 +78,7 @@
 (ah/install-packages)
 
 (wrap-region-global-mode t)
+
 (load-theme 'monokai t)
 
 (require 'multiple-cursors)
@@ -81,11 +90,52 @@
 (global-set-key (kbd "C-c m") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
-(require 'auto-complete-config)
-(ac-config-default)
+;; (require 'auto-complete-config)
+;; (ac-config-default)
+(add-hook 'after-init-hook 'global-company-mode) ; this or auto-complete?
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
+(add-hook 'ruby-mode-hook 'projectile-mode)
+
+(require 'flx-ido)
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+;; disable ido faces to see flx highlights.
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
+
+;; ruby on rails packages
+(add-hook 'projectile-mode-hook 'projectile-rails-on)
+(global-set-key (kbd "C-c t") 'projectile-rails-rake)
+(global-set-key (kbd "C-c g") 'projectile-rails-generate)
+
+(require 'flymake-ruby)
+(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+
+(require 'rbenv)
+(global-rbenv-mode)
+(global-set-key (kbd "C-c r") 'global-rbenv-mode)
+
+(add-hook 'ruby-mode-hook 'robe-mode)
+(eval-after-load 'company
+  '(push 'company-robe company-backends))
+ 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ido customization
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Display ido results vertically, rather than horizontally
+(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
+(defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
+(add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
+;; use up and down arrows in vertical mode
+(defun ido-define-keys ()
+  (define-key ido-completion-map [down] 'ido-next-match)
+  (define-key ido-completion-map [up] 'ido-prev-match))
+(add-hook 'ido-setup-hook 'ido-define-keys)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ahebert custom commands
