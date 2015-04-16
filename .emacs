@@ -36,11 +36,6 @@
 (setq inhibit-startup-message t) ;; stop showing emacs welcome screen
 (setq case-fold-search t)   ; make searches case insensitive
 
-;; Add /usr/tex for org-mode export to PDF on the Mac
-(if (eq system-type 'darwin)
-    (setenv "PATH" (concat (getenv "PATH") ":/usr/texbin"))
-)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; packages
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -67,7 +62,9 @@
     projectile-rails
     flymake-ruby
     rbenv
-    robe))
+    robe
+    ;; mac specific
+    exec-path-from-shell))
 
 (defun ah/install-packages ()
   "You know... install packages."
@@ -122,7 +119,11 @@
 (add-hook 'ruby-mode-hook 'robe-mode)
 (eval-after-load 'company
   '(push 'company-robe company-backends))
- 
+
+;; mac specific
+(if (eq system-type 'darwin)
+    (exec-path-from-shell-initialize)
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido customization
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
