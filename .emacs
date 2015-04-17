@@ -35,12 +35,21 @@
 (tool-bar-mode -1)
 (setq inhibit-startup-message t) ;; stop showing emacs welcome screen
 (setq case-fold-search t)   ; make searches case insensitive
+(put 'upcase-region 'disabled nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; spelling
+;; hooks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; spelling
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (add-hook 'text-mode-hook 'flyspell-mode)
+
+;; org-mode
+(defun my-org-mode-hook()
+  (org-indent-mode 1)
+  (visual-line-mode 1)
+  )
+(add-hook 'org-mode-hook 'my-org-mode-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; packages
@@ -182,20 +191,22 @@
   )
 (global-set-key (kbd "C-c d") 'duplicate-line)
 
-(defun move-line-up()
-  (interactive)
+(defun move-line-up(&optional arg)
+  (interactive "p")
   (let ((col (current-column)))
-    (transpose-lines 1)
-    (previous-line 2)
+    (dotimes (_ arg)
+      (transpose-lines 1)
+      (previous-line 2))
     (move-to-column col))
   )
-(defun move-line-down()
-  (interactive)
-    (let ((col (current-column)))
+(defun move-line-down(&optional arg)
+  (interactive "p")
+  (let ((col (current-column)))
+    (dotimes (_ arg)
       (next-line 1)
       (transpose-lines 1)
-      (previous-line 1)
-      (move-to-column col))
+      (previous-line 1))
+    (move-to-column col))
   )
 (global-set-key (kbd "C-c k") 'move-line-up)
 (global-set-key (kbd "C-c j") 'move-line-down)
@@ -206,7 +217,7 @@
   (unless (bolp)
     (beginning-of-line))
   (newline)
-  (forward-line -1)
+  (previous-line 1)
   (indent-according-to-mode))
 
 (defun vi-open-line-below ()
@@ -220,13 +231,6 @@
 (global-set-key (kbd "C-c O") 'vi-open-line-above)
 
 (global-set-key (kbd "C-c f") 'ff-find-related-file)
-
-(defun my-org-mode-hook()
-  (org-indent-mode 1)
-  (visual-line-mode 1)
-  )
-(add-hook 'org-mode-hook 'my-org-mode-hook)
-(put 'upcase-region 'disabled nil)
 
 (defun smart-beginning-of-line ()
   "Move point to first non-whitespace character or beginning-of-line.
@@ -242,10 +246,3 @@ If point was already at that position, move point to beginning of line."
 (global-set-key [home] 'smart-beginning-of-line)
 (global-set-key [end] 'move-end-of-line)
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
