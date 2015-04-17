@@ -77,17 +77,22 @@
     projectile-rails
     flymake-ruby
     rbenv
-    robe
-    ;; mac specific
-    exec-path-from-shell))
+    robe))
 
-(defun ah/install-packages ()
+(defun ah/install-packages (packages)
   "You know... install packages."
   (interactive)
-  (dolist (p user-packages)
+  (dolist (p packages)
     (when (not (package-installed-p p))
       (package-install p))))
-(ah/install-packages)
+(ah/install-packages user-packages)
+
+;; Mac specific packages
+(if (eq system-type 'darwin)
+    (progn
+      (defvar user-packages-mac '(exec-path-from-shell))
+      (ah/install-packages user-packages-mac)
+      (exec-path-from-shell-initialize)))
 
 (wrap-region-global-mode t)
 
@@ -135,10 +140,6 @@
 (eval-after-load 'company
   '(push 'company-robe company-backends))
 
-;; mac specific
-(if (eq system-type 'darwin)
-    (exec-path-from-shell-initialize)
-)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido customization
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
