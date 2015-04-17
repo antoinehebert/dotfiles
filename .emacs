@@ -88,11 +88,10 @@
 (ah/install-packages user-packages)
 
 ;; Mac specific packages
-(if (eq system-type 'darwin)
-    (progn
-      (defvar user-packages-mac '(exec-path-from-shell))
-      (ah/install-packages user-packages-mac)
-      (exec-path-from-shell-initialize)))
+(when (eq system-type 'darwin)
+  (defvar user-packages-mac '(exec-path-from-shell))
+  (ah/install-packages user-packages-mac)
+  (exec-path-from-shell-initialize))
 
 (wrap-region-global-mode t)
 
