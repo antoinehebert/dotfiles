@@ -89,9 +89,18 @@
 
 ;; Mac specific packages
 (when (eq system-type 'darwin)
-  (defvar user-packages-mac '(exec-path-from-shell))
+  (defvar user-packages-mac
+    '(
+      exec-path-from-shell
+      dash-at-point))
+  
   (ah/install-packages user-packages-mac)
-  (exec-path-from-shell-initialize))
+  
+  (exec-path-from-shell-initialize)
+
+  (autoload 'dash-at-point "dash-at-point"
+    "Search the word at point with Dash." t nil)
+  (global-set-key (kbd "C-c h") 'dash-at-point))
 
 (wrap-region-global-mode t)
 
