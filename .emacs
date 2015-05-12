@@ -134,8 +134,8 @@
 
 ;; ruby on rails packages
 (add-hook 'projectile-mode-hook 'projectile-rails-on)
-(global-set-key (kbd "C-c t") 'projectile-rails-rake)
-(global-set-key (kbd "C-c g") 'projectile-rails-generate)
+;; (global-set-key (kbd "C-c t") 'projectile-rails-rake)
+;; (global-set-key (kbd "C-c g") 'projectile-rails-generate)
 
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
