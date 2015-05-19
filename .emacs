@@ -73,6 +73,7 @@
     yaml-mode
     projectile
     flx-ido
+    linum-relative
     ;; ruby on rails packages
     projectile-rails
     flymake-ruby
@@ -132,10 +133,12 @@
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
 
+(require 'linum-relative)
+;; (linum-on)
+
 ;; ruby on rails packages
+(setq projectile-rails-keymap-prefix (kbd "C-c C-r")) ; C-c letter is reserve for user!
 (add-hook 'projectile-mode-hook 'projectile-rails-on)
-;; (global-set-key (kbd "C-c t") 'projectile-rails-rake)
-;; (global-set-key (kbd "C-c g") 'projectile-rails-generate)
 
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
