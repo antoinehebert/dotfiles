@@ -105,7 +105,12 @@
 
 (wrap-region-global-mode t)
 
+;; theme and font
 (load-theme 'monokai t)
+(set-face-attribute 'default nil :height 160)
+(when (eq system-type 'darwin)
+  (set-face-attribute 'default nil :family "Monaco")
+  )
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c c") 'mc/edit-lines)
