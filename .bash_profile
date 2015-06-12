@@ -20,3 +20,7 @@ fi
 
 # make z command available
 . ~/bin/z/z.sh
+
+# Enable globbing
+shopt -s globstar
+
