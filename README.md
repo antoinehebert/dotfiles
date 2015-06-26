@@ -10,6 +10,8 @@ install:
 - gvim
 - emacs
 - git
+- svn
+- python-pip
 
 ## Installation
 
