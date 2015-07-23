@@ -78,7 +78,10 @@
     projectile-rails
     flymake-ruby
     rbenv
-    robe))
+    robe
+    flycheck
+    rubocop
+    ))
 
 (defun ah/install-packages (packages)
   "You know... install packages."
@@ -147,6 +150,8 @@
 
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 (require 'rbenv)
 (global-rbenv-mode)
