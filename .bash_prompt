@@ -44,7 +44,7 @@ function svn_prompt() {
    # sometimes...
    if $(svn info > /dev/null 2>&1); then
       # branch name
-      echo -n "$(svn info | grep '^URL:' | egrep -o 'trunk|(branches|tags)/[^/]*') "
+      echo -n "$(svn info | grep '^URL:' | egrep -o 'trunk|(branches|tags)/.*') "
 
       # dirty?
       if $(svn status|grep -E '^\s*[ACDIM!L]' >/dev/null 2>&1); then
