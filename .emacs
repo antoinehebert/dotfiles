@@ -80,8 +80,7 @@
     rbenv
     robe
     flycheck
-    rubocop
-    ))
+    rubocop))
 
 (defun ah/install-packages (packages)
   "You know... install packages."
@@ -174,6 +173,12 @@
   (define-key ido-completion-map [down] 'ido-next-match)
   (define-key ido-completion-map [up] 'ido-prev-match))
 (add-hook 'ido-setup-hook 'ido-define-keys)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Customize buffer names
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ahebert custom commands
