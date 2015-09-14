@@ -3,7 +3,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"])
+ '(ansi-color-names-vector
+   ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"])
  '(org-export-backends (quote (ascii html icalendar latex md))))
 (put 'downcase-region 'disabled nil)
 
@@ -14,7 +15,9 @@
 (setq c-default-style (quote ((c++-mode . "bsd") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
 (setq column-number-mode t)
 (setq compile-command "make -C /home/ahebert/projects/MDI/builddev/AMD64_RELEASE -j3")
-(setq css-indent-offset 4)
+(setq css-indent-offset 2)
+(setq jsx-indent-level 2)
+
 (delete-selection-mode 1)
 (electric-indent-mode 1)
 (electric-pair-mode 1)
@@ -36,6 +39,10 @@
 (setq inhibit-startup-message t) ;; stop showing emacs welcome screen
 (setq case-fold-search t)   ; make searches case insensitive
 (put 'upcase-region 'disabled nil)
+
+;; frame title
+(setq-default frame-title-format '((:eval (if (buffer-file-name)
+                                              (abbreviate-file-name (buffer-file-name)) "%f"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hooks
@@ -98,9 +105,9 @@
     '(
       exec-path-from-shell
       dash-at-point))
-  
+
   (ah/install-packages user-packages-mac)
-  
+
   (exec-path-from-shell-initialize)
 
   (autoload 'dash-at-point "dash-at-point"
@@ -275,3 +282,9 @@ If point was already at that position, move point to beginning of line."
 (global-set-key [home] 'smart-beginning-of-line)
 (global-set-key [end] 'move-end-of-line)
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
