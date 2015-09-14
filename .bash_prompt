@@ -1,4 +1,4 @@
-default_username="^(ahebert|t00ny)$"
+default_username="^(ahebert|t00ny|tone)$"
 
 # shell color
 fblack=$(tput setaf 0)
@@ -32,7 +32,7 @@ function parse_git_dirty() {
 }
 
 function git_prompt() {
-   if [[ -n $(git branch 2> /dev/null) ]]; then 
+   if [[ -n $(git branch 2> /dev/null) ]]; then
       echo -n $(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1/")
       echo -n " $(parse_git_dirty) "
    fi
