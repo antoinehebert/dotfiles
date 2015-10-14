@@ -12,6 +12,7 @@ install:
 - git
 - svn
 - python-pip
+- bash-completion
 
 ## Installation
 
