@@ -3,9 +3,9 @@ alias c='pygmentize -O style=monokai -f console256 -g'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
-   colorflag="--color"
+    colorflag="--color"
 else # OS X `ls`
-     colorflag="-G"
+    colorflag="-G"
 fi
 
 alias ls='ls ${colorflag}'
@@ -14,3 +14,9 @@ alias ll='ls -la ${colorflag}'
 alias svnnew="svn st | egrep '^\?' | tr -d ?"
 alias svnnewadd="svn st | egrep '^\?' | tr -d ?| xargs svn add"
 alias svnnewrm="svn st | egrep '^\?' | tr -d ?| xargs rm -rf"
+
+if [ "$(uname)" == "Darwin" ]; then
+    alias ct="$( brew --prefix )/bin/ctags -R --exclude=.git --exclude=.svn --exclude=log --exclude=tmp ."
+else
+    alias ct="ctags -R --exclude=.git --exclude=.svn --exclude=log --exclude=tmp ."
+fi
