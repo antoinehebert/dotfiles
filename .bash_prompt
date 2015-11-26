@@ -77,9 +77,9 @@ On_IWhite='\e[0;107m'   # White
 # Fastest possible way to check if repo is dirty. a savior for the WebKit repo.
 function parse_git_dirty() {
    if [[ -n $(git diff --quiet --ignore-submodules HEAD &>/dev/null; [ $? -eq 1 ] && echo "1") ]]; then
-      echo -e "${Red}✗"
+      echo -e "✗"
    else
-      echo -e "${Green}✓"
+      echo -e "✓"
    fi
 }
 
@@ -100,9 +100,9 @@ function svn_prompt() {
 
       # dirty?
       if $(svn status|grep -E '^\s*[ACDIM!L]' >/dev/null 2>&1); then
-         echo -e "${Red}✗ "
+         echo -e "✗ "
       else
-         echo -e "${Green}✓ "
+         echo -e "✓ "
       fi
 
       echo
