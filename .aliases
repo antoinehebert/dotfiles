@@ -14,6 +14,7 @@ alias ll='ls -la ${colorflag}'
 alias svnnew="svn st | egrep '^\?' | tr -d ?"
 alias svnnewadd="svn st | egrep '^\?' | tr -d ?| xargs svn add"
 alias svnnewrm="svn st | egrep '^\?' | tr -d ?| xargs rm -rf"
+alias svndf="svn diff | colordiff | less -R"
 
 if [ "$(uname)" == "Darwin" ]; then
     alias ct="$( brew --prefix )/bin/ctags -R --exclude=.git --exclude=.svn --exclude=log --exclude=tmp ."
