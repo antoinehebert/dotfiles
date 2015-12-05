@@ -12,3 +12,6 @@
         df = diff --color --color-words --abbrev
 [push]
 	default = simple
+[diff]
+	tool = meld
+
