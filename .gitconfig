@@ -9,9 +9,8 @@
         last = log -1 --stat HEAD
         lol = log --oneline --graph --decorate --color
         lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
-        df = diff --color --color-words --abbrev
+        df = diff
 [push]
 	default = simple
 [diff]
 	tool = meld
-
