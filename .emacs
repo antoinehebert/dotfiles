@@ -120,7 +120,7 @@
 (load-theme 'monokai t)
 (set-face-attribute 'default nil :height 160)
 (when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :family "Monaco")
+  (set-face-attribute 'default nil :family "Inconsolata")
   )
 
 (require 'multiple-cursors)
