@@ -7,9 +7,10 @@
         ci = commit
         br = branch
         last = log -1 --stat HEAD
-        lol = log --oneline --graph --decorate --color
-        lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+        lg = log --oneline --graph --decorate --color
+        lol = log --graph --decorate --color
         df = diff
+        dff = diff --no-prefix -U10000
 [push]
 	default = simple
 [diff]
