@@ -103,16 +103,15 @@
 (when (eq system-type 'darwin)
   (defvar user-packages-mac
     '(
-      exec-path-from-shell
-      dash-at-point))
+      exec-path-from-shell))
 
   (ah/install-packages user-packages-mac)
 
   (exec-path-from-shell-initialize)
 
-  (autoload 'dash-at-point "dash-at-point"
-    "Search the word at point with Dash." t nil)
-  (global-set-key (kbd "C-c h") 'dash-at-point))
+  ;; swap cmd and option
+  (setq mac-option-modifier 'super)
+  (setq mac-command-modifier 'meta))
 
 (wrap-region-global-mode t)
 
