@@ -40,8 +40,7 @@
 (put 'upcase-region 'disabled nil)
 
 ;; frame title
-(setq-default frame-title-format '((:eval (if (buffer-file-name)
-                                              (abbreviate-file-name (buffer-file-name)) "%f"))))
+(setq-default frame-title-format "%f")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hooks
