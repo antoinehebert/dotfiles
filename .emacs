@@ -88,7 +88,9 @@
     robe
     flycheck
     rubocop
-    expand-region))
+    expand-region
+    rainbow-delimiters
+    material-theme))
 
 (defun ah/install-packages (packages)
   "You know... install packages."
@@ -115,7 +117,7 @@
 (wrap-region-global-mode t)
 
 ;; theme and font
-(load-theme 'monokai t)
+(load-theme 'material t)
 (when (eq system-type 'darwin)
   (set-face-attribute 'default nil :family "Inconsolata")
   )
@@ -171,6 +173,9 @@
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
 (global-set-key (kbd "C-+") 'er/contract-region)
+
+(require 'rainbow-delimiters)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido customization
