@@ -119,7 +119,7 @@
 ;; theme and font
 (load-theme 'material t)
 (when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :family "Inconsolata")
+  (set-face-attribute 'default nil :family "Inconsolata" :height 160)
   )
 
 (require 'multiple-cursors)
