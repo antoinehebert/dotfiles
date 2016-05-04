@@ -51,12 +51,17 @@
 
 ;; org-mode
 (defun my-org-mode-hook()
-  (org-indent-mode 1)
-  (visual-line-mode 1)
+  (org-indent-mode t)
+  (visual-line-mode t)
+  (org-bullets-mode t)
   )
 (add-hook 'org-mode-hook 'my-org-mode-hook)
 
+
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(setq org-ellipsis "⤵")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; packages
@@ -90,7 +95,8 @@
     rubocop
     expand-region
     rainbow-delimiters
-    material-theme))
+    material-theme
+    org-bullets))
 
 (defun ah/install-packages (packages)
   "You know... install packages."
