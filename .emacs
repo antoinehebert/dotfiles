@@ -96,7 +96,8 @@
     expand-region
     rainbow-delimiters
     material-theme
-    org-bullets))
+    org-bullets
+    powerline))
 
 (defun ah/install-packages (packages)
   "You know... install packages."
@@ -127,6 +128,7 @@
 (when (eq system-type 'darwin)
   (set-face-attribute 'default nil :family "Inconsolata" :height 160)
   )
+(powerline-default-theme)
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c c") 'mc/edit-lines)
