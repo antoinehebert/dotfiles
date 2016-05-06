@@ -34,13 +34,15 @@
 (show-paren-mode 1)
 (setq standard-indent 4)
 (setq tab-width 4)
-(tool-bar-mode -1)
 (setq inhibit-startup-message t) ;; stop showing emacs welcome screen
 (setq case-fold-search t)   ; make searches case insensitive
 (put 'upcase-region 'disabled nil)
 
 ;; frame title
 (setq-default frame-title-format "%f")
+
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hooks
