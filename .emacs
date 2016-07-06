@@ -95,6 +95,7 @@
     robe
     flycheck
     rubocop
+    ;; RoR end
     expand-region
     rainbow-delimiters
     material-theme
@@ -126,7 +127,7 @@
 (wrap-region-global-mode t)
 
 ;; theme and font
-(load-theme 'material t)
+;; (load-theme 'material t)
 (when (eq system-type 'darwin)
   (set-face-attribute 'default nil :family "Inconsolata" :height 160)
   )
