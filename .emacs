@@ -127,7 +127,7 @@
 (wrap-region-global-mode t)
 
 ;; theme and font
-;; (load-theme 'material t)
+(load-theme 'material-light t)
 (when (eq system-type 'darwin)
   (set-face-attribute 'default nil :family "Inconsolata" :height 160)
   )
@@ -325,3 +325,17 @@ If point was already at that position, move point to beginning of line."
     (comment-or-uncomment-region beg end)))
 
 (global-set-key (kbd "M-;") 'ah/comment-or-uncomment-region-or-line)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
