@@ -115,4 +115,4 @@ function usernamehost() {
 	if ! [[ $USER =~ $default_username ]]; then echo "$USER "; fi
 }
 
-PS1="\[$Red\]\$(usernamehost)\[$Color_Off\]\[$IBlue\]\$(git_prompt)\$(svn_prompt)\[$Color_Off\]\[$IBlack\]\W\[$Color_Off\] \[$Cyan\]→\[$Color_Off\] "
+PS1="\[$Red\]\$(usernamehost)\[$Color_Off\]\[$IBlue\]\$(git_prompt)\$(svn_prompt)\[$Color_Off\]\[$IBlack\]\w\[$Color_Off\] \[$Cyan\]→\[$Color_Off\] "
