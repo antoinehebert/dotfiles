@@ -15,4 +15,5 @@ alias svnnew="svn st | egrep '^\?' | tr -d ?"
 alias svnnewadd="svn st | egrep '^\?' | tr -d ?| xargs svn add"
 alias svnnewrm="svn st | egrep '^\?' | tr -d ?| xargs rm -rf"
 alias svndf="svn diff | colordiff | less -R"
+alias tmuxclip="tmux show-buffer | xclip -sel clip -i"
 
