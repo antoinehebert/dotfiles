@@ -1,11 +1,15 @@
 # cat with beautiful colors
 alias pcat='pygmentize -O style=monokai -f console256 -g'
 
-# Detect which `ls` flavor is in use
-if ls --color > /dev/null 2>&1; then # GNU `ls`
-    colorflag="--color"
-else # OS X `ls`
+if [ "$(uname)" == "Darwin" ]; then
+    # Do something under Mac OS X platform        
     colorflag="-G"
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    # Do something under GNU/Linux platform
+    colorflag="--color"
+
+    alias pbcopy='xsel --clipboard --input'
+    alias pbpaste='xsel --clipboard --output'
 fi
 
 alias ls='ls ${colorflag}'
