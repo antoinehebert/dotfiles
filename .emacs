@@ -13,7 +13,7 @@
 (setq c-basic-offset 4)
 (setq c-default-style (quote ((c++-mode . "bsd") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
 (setq column-number-mode t)
-(setq compile-command "make -C /home/ahebert/projects/MDI/builddev/AMD64_RELEASE -j3")
+(setq compile-command "make -j5")
 (setq css-indent-offset 2)
 (setq jsx-indent-level 2)
 
@@ -332,7 +332,8 @@ If point was already at that position, move point to beginning of line."
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" default))))
+    ("e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" default)))
+ '(safe-local-variable-values (quote ((flycheck-gcc-language-standard . c++11)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
