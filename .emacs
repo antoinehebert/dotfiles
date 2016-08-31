@@ -39,7 +39,10 @@
 (put 'upcase-region 'disabled nil)
 
 ;; frame title
-(setq-default frame-title-format "%f")
+(add-hook 'after-init-hook (lambda ()
+                             (setq frame-title-format
+                                   '(buffer-file-name "%f" (dired-directory dired-directory "%b")))
+                             ))
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
