@@ -198,7 +198,8 @@
 (global-set-key (kbd "C-c t") 'ctags-create-or-update-tags-table)
 
 (require 'fill-column-indicator)
-(fci-mode)
+(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
+(global-fci-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido customization
