@@ -104,7 +104,8 @@
     material-theme
     org-bullets
     powerline
-    ctags))
+    ctags
+    fill-column-indicator))
 
 (defun ah/install-packages (packages)
   "You know... install packages."
@@ -195,6 +196,9 @@
 (require 'ctags)
 (setq tags-revert-without-query t)
 (global-set-key (kbd "C-c t") 'ctags-create-or-update-tags-table)
+
+(require 'fill-column-indicator)
+(fci-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido customization
