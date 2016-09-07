@@ -198,8 +198,8 @@
 (global-set-key (kbd "C-c t") 'ctags-create-or-update-tags-table)
 
 (require 'fill-column-indicator)
-(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
-(global-fci-mode 1)
+;; (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
+;; (global-fci-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido customization
@@ -348,7 +348,8 @@ If point was already at that position, move point to beginning of line."
     ("e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" default)))
  '(safe-local-variable-values
    (quote
-    ((flycheck-gcc-language-standard . c++14)
+    ((flycheck-clang-language-standard . c++14)
+     (flycheck-gcc-language-standard . c++14)
      (flycheck-gcc-language-standard . c++11)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
