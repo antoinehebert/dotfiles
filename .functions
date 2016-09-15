@@ -115,3 +115,7 @@ hop() {
   $cmd -o ProxyCommand="ssh $man_in_the_middle nc -w 60 %h %p" $@
 }
 
+svndf() {
+  svn diff "$@" | colordiff | less -R
+}
+
