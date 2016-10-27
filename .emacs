@@ -137,7 +137,7 @@
 (wrap-region-global-mode t)
 
 ;; theme and font
-(load-theme 'solarized-light t)
+(load-theme 'material-light t)
 (when (eq system-type 'darwin)
   (set-face-attribute 'default nil :family "Inconsolata" :height 160)
   )
