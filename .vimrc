@@ -9,7 +9,7 @@ filetype plugin on
 
 "set nocompatible
 
-colorscheme molokai
+" colorscheme molokai
 
 syntax on
 
@@ -20,9 +20,9 @@ endif
 " naviguate where there's no text
 set virtualedit=all
 
-set tabstop=3
-set shiftwidth=3
-set softtabstop=3
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab
 
 " tabs are 2 chars for xml... 
@@ -89,17 +89,17 @@ nmap <leader>m :NERDTreeFind<cr>
 "Show hidden files
 "let NERDTreeShowHidden=1
 
-"-----------------------------------------------------------------------------
-" FuzzyFinder plugin
-"-----------------------------------------------------------------------------
-" FuzzyFile search shortcut
-nnoremap <leader>f :FufFile<cr>
-
-" FuzzyBuffer search shortcut
-nnoremap <leader>b :FufBuffer<cr>
-
-" FuzzyTags search shortcut
-nnoremap <leader>t :FufTag<cr>
+" "-----------------------------------------------------------------------------
+" " FuzzyFinder plugin
+" "-----------------------------------------------------------------------------
+" " FuzzyFile search shortcut
+" nnoremap <leader>f :FufFile<cr>
+" 
+" " FuzzyBuffer search shortcut
+" nnoremap <leader>b :FufBuffer<cr>
+" 
+" " FuzzyTags search shortcut
+" nnoremap <leader>t :FufTag<cr>
 
 "-----------------------------------------------------------------------------
 " File Switcher plugin
@@ -109,3 +109,10 @@ nnoremap <leader><tab> :FSHere<cr>
 
 " FileSwitch Left
 "nnoremap <leader><tab>l :FSSplitLeft<cr>
+
+"-----------------------------------------------------------------------------
+" ctrlp
+"-----------------------------------------------------------------------------
+nnoremap <leader>f :CtrlP<cr>
+nnoremap <leader>b :CtrlPBuffer<cr>
+
