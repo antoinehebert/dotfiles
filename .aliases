@@ -1,5 +1,5 @@
 # cat with beautiful colors
-alias pcat='pygmentize -O style=monokai -f console256 -g'
+alias pcat='pygmentize -f console256 -g'
 
 if [ "$(uname)" == "Darwin" ]; then
     # Do something under Mac OS X platform        
