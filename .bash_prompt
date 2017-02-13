@@ -1,4 +1,4 @@
-default_username="^(ahebert|t00ny|tone)$"
+default_username="^(heberta|ahebert|t00ny|tone)$"
 
 # Reset
 Color_Off='\e[0m'       # Text Reset
