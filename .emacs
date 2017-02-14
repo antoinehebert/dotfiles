@@ -109,7 +109,6 @@
     material-theme
     org-bullets
     powerline
-    ctags
     fill-column-indicator))
 
 (defun ah/install-packages (packages)
@@ -197,10 +196,6 @@
 
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-
-(require 'ctags)
-(setq tags-revert-without-query t)
-(global-set-key (kbd "C-c t") 'ctags-create-or-update-tags-table)
 
 (require 'fill-column-indicator)
 ;; (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
