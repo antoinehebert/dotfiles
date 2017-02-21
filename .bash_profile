@@ -29,3 +29,5 @@ if [ "$(uname)" == "Darwin" ]; then
         . `brew --prefix`/etc/bash_completion
     fi
 fi
+
+source ~/git-completion.bash
