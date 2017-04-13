@@ -71,7 +71,7 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (setq org-ellipsis "⤵")
-
+(setq org-bullets-bullet-list '("•"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; packages
