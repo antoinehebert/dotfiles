@@ -348,7 +348,7 @@ If point was already at that position, move point to beginning of line."
     (setq str (replace-regexp-in-string "\\([^0-9a-zA-Z]+\\)" "_" str))
     (setq str (replace-regexp-in-string "^_*" "" str))
     (setq str (downcase str))
-    (message "ticket/%s" str)))
+    (kill-new (concat "ticket/" str))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
