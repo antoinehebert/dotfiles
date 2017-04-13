@@ -338,6 +338,18 @@ If point was already at that position, move point to beginning of line."
     (comment-or-uncomment-region beg end)))
 
 (global-set-key (kbd "M-;") 'ah/comment-or-uncomment-region-or-line)
+
+
+(defun ah/ticket-description-to-branch-name (start end)
+  "#41234: Some Bug => ticket/41234_some_bug"
+  (interactive "r")
+  (let ((case-fold-search nil)
+        (str (buffer-substring (mark) (point))))
+    (setq str (replace-regexp-in-string "\\([^0-9a-zA-Z]+\\)" "_" str))
+    (setq str (replace-regexp-in-string "^_*" "" str))
+    (setq str (downcase str))
+    (message "ticket/%s" str)))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
