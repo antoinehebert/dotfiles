@@ -92,26 +92,17 @@
     wrap-region
     monokai-theme
     multiple-cursors
-    ;;auto-complete
-    company
+    company ;; auto-complete
     yaml-mode
-    projectile
     flx-ido
     linum-relative
-    ;; ruby on rails packages
-    projectile-rails
-    flymake-ruby
-    rbenv
-    robe
     flycheck
+    rbenv
     rubocop
-    ;; RoR end
     expand-region
     rainbow-delimiters
     material-theme
     org-bullets
-    ;; powerline
-    fill-column-indicator
     magit
     json-mode))
 
@@ -145,7 +136,6 @@
 (when (eq system-type 'darwin)
   (set-face-attribute 'default nil :family "Inconsolata" :height 160)
   )
-;; (powerline-default-theme)
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c c") 'mc/edit-lines)
@@ -156,15 +146,13 @@
 (global-set-key (kbd "C-c m") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
-;; (require 'auto-complete-config)
-;; (ac-config-default)
 (add-hook 'after-init-hook 'global-company-mode) ; this or auto-complete?
 (setq company-dabbrev-downcase nil)
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
-(add-hook 'ruby-mode-hook 'projectile-mode)
+(add-hook 'ruby-mode-hook #'rubocop-mode)
 
 (require 'flx-ido)
 (ido-mode 1)
@@ -174,21 +162,37 @@
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
 
-(require 'linum-relative)
-;; (linum-on)
-
-;; ruby on rails packages
-(setq projectile-rails-keymap-prefix (kbd "C-c C-r")) ; C-c letter is reserve for user!
-(add-hook 'projectile-mode-hook 'projectile-rails-on)
-
-(require 'flymake-ruby)
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
-
 ;; use the right modes for javascript files
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 (require 'flycheck)
+
+;; Stolen from https://github.com/codesuki/add-node-modules-path/blob/master/add-node-modules-path.el
+(defun my/add-node-modules-path ()
+  "Search the current buffer's parent directories for `node_modules/.bin`.
+If it's found, then add it to `exec-path`."
+  (interactive)
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (path (and root
+                    (expand-file-name "node_modules/.bin/" root))))
+    (if root
+        (progn
+          (make-local-variable 'exec-path)
+          (add-to-list 'exec-path path)
+          (message (concat "added " path  " to exec-path")))
+      (message (concat "node_modules not found in " root)))))
+
+(eval-after-load 'web-mode
+  '(add-hook 'web-mode-hook 'my/add-node-modules-path))
+
+(eval-after-load 'js-mode
+  '(add-hook 'js-mode-hook 'my/add-node-modules-path))
+
+(eval-after-load 'js2-mode
+  '(add-hook 'js2-mode-hook 'my/add-node-modules-path))
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 ;; disable jshint since we prefer eslint checking
@@ -200,26 +204,14 @@
 (flycheck-add-mode 'javascript-eslint 'js2-mode)
 (flycheck-add-mode 'javascript-eslint 'js-mode)
 
-(defun my/use-eslint-from-node-modules ()
-  "Use local eslint from node_modules before global."
-   ;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable"
-  (let* ((root (locate-dominating-file
-                (or (buffer-file-name) default-directory)
-                "node_modules"))
-         (eslint (and root
-                      (expand-file-name "node_modules/eslint/bin/eslint.js"
-                                        root))))
-    (when (and eslint (file-executable-p eslint))
-      (setq-local flycheck-javascript-eslint-executable eslint))))
-(add-hook 'flycheck-mode-hook 'my/use-eslint-from-node-modules)
-
 (defun my/eslint-fix ()
   "Format the current file with ESLint."
   (interactive)
-  (if (executable-find flycheck-javascript-eslint-executable)
-      (progn (call-process flycheck-javascript-eslint-executable nil "*ESLint Errors*" nil "--fix" buffer-file-name)
-             (revert-buffer t t t))
-    (message "ESLint not found.")))
+  (let ((eslint "eslint"))
+    (if (executable-find eslint)
+        (progn (call-process eslint nil "*ESLint Errors*" nil "--fix" buffer-file-name)
+               (revert-buffer t t t))
+      (message "ESLint not found."))))
 
 (defun my/eslint-fix-after-save-hook ()
   "After save hook for my/eslint-fix."
@@ -239,10 +231,6 @@
 (global-rbenv-mode)
 (global-set-key (kbd "C-c r") 'global-rbenv-mode)
 
-(add-hook 'ruby-mode-hook 'robe-mode)
-(eval-after-load 'company
-  '(push 'company-robe company-backends))
-
 ;; expand-region
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
@@ -250,10 +238,6 @@
 
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-
-(require 'fill-column-indicator)
-;; (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
-;; (global-fci-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido customization
@@ -403,3 +387,4 @@ If point was already at that position, move point to beginning of line."
 
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key (kbd "C-c f") 'rgrep)
+
