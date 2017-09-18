@@ -1,4 +1,4 @@
-;; custom-set-variables was added by Custom.
+; custom-set-variables was added by Custom.
 ;; If you edit it by hand, you could mess it up, so be careful.
 ;; Your init file should contain only one such instance.
 ;; If there is more than one, they won't work right.
@@ -8,7 +8,7 @@
 (put 'downcase-region 'disabled nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ahebert variables
+;; variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq c-basic-offset 4)
 (setq c-default-style (quote ((c++-mode . "bsd") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
@@ -39,10 +39,12 @@
 (put 'upcase-region 'disabled nil)
 
 ;; frame title
-(add-hook 'after-init-hook (lambda ()
-                             (setq frame-title-format
-                                   '(buffer-file-name "%f" (dired-directory dired-directory "%b")))
-                             ))
+(defun my/set-frame-title ()
+  "Frame title is current buffer full path."
+  (setq frame-title-format
+        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
+(add-hook 'after-init-hook 'my/set-frame-title)
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -108,11 +110,13 @@
     rainbow-delimiters
     material-theme
     org-bullets
-    powerline
-    fill-column-indicator))
+    ;; powerline
+    fill-column-indicator
+    magit
+    json-mode))
 
 (defun ah/install-packages (packages)
-  "You know... install packages."
+  "You know... install PACKAGES."
   (interactive)
   (dolist (p packages)
     (when (not (package-installed-p p))
@@ -136,11 +140,12 @@
 (wrap-region-global-mode t)
 
 ;; theme and font
-(load-theme 'material-light t)
+;; (load-theme 'material-light t)
+(load-theme 'monokai t)
 (when (eq system-type 'darwin)
   (set-face-attribute 'default nil :family "Inconsolata" :height 160)
   )
-(powerline-default-theme)
+;; (powerline-default-theme)
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c c") 'mc/edit-lines)
@@ -179,7 +184,56 @@
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
+;; use the right modes for javascript files
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+(require 'flycheck)
+
 (add-hook 'after-init-hook #'global-flycheck-mode)
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+              (append flycheck-disabled-checkers '(javascript-jshint)))
+
+;; use eslint javascript files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+(flycheck-add-mode 'javascript-eslint 'js2-mode)
+(flycheck-add-mode 'javascript-eslint 'js-mode)
+
+(defun my/use-eslint-from-node-modules ()
+  "Use local eslint from node_modules before global."
+   ;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable"
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+(add-hook 'flycheck-mode-hook 'my/use-eslint-from-node-modules)
+
+(defun my/eslint-fix ()
+  "Format the current file with ESLint."
+  (interactive)
+  (if (executable-find flycheck-javascript-eslint-executable)
+      (progn (call-process flycheck-javascript-eslint-executable nil "*ESLint Errors*" nil "--fix" buffer-file-name)
+             (revert-buffer t t t))
+    (message "ESLint not found.")))
+
+(defun my/eslint-fix-after-save-hook ()
+  "After save hook for my/eslint-fix."
+  (add-hook 'after-save-hook 'my/eslint-fix nil t))
+
+(eval-after-load 'js-mode
+  '(add-hook 'js-mode-hook 'my/eslint-fix-after-save-hook))
+
+(eval-after-load 'js2-mode
+  '(add-hook 'js2-mode-hook 'my/eslint-fix-after-save-hook))
+
+(eval-after-load 'web2-mode
+  '(add-hook 'web-mode-hook 'my/eslint-fix-after-save-hook))
+
 
 (require 'rbenv)
 (global-rbenv-mode)
@@ -222,7 +276,7 @@
 (setq uniquify-buffer-name-style 'forward)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ahebert custom commands
+;; my custom commands
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun increment-number-at-point ()
   (interactive)
@@ -298,12 +352,10 @@
 (global-set-key (kbd "C-c o") 'vi-open-line-below)
 (global-set-key (kbd "C-c O") 'vi-open-line-above)
 
-(global-set-key (kbd "C-c f") 'ff-find-related-file)
+(global-set-key (kbd "C-c h") 'ff-find-related-file) ;; h is for header since I used f for rgrep already...
 
 (defun smart-beginning-of-line ()
-  "Move point to first non-whitespace character or beginning-of-line.
-
-Move point to the first non-whitespace character on this line.
+  "Move point to the first non-whitespace character on this line.
 If point was already at that position, move point to beginning of line."
   (interactive "^") ; Use (interactive "^") in Emacs 23 to make shift-select work
   (let ((oldpos (point)))
@@ -316,7 +368,7 @@ If point was already at that position, move point to beginning of line."
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
 
 (defun ah/delete-surround ()
-  "Delete one char on each side of the region"
+  "Delete one char on each side of the region."
   (interactive)
   (kill-region (region-beginning) (region-end))
   (delete-char 1)
@@ -339,9 +391,8 @@ If point was already at that position, move point to beginning of line."
 
 (global-set-key (kbd "M-;") 'ah/comment-or-uncomment-region-or-line)
 
-
-(defun ah/ticket-description-to-branch-name (start end)
-  "#41234: Some Bug => ticket/41234_some_bug"
+(defun my/ticket-description-to-branch-name (start end)
+  "Turns '#41234: Some Bug' => 'ticket/41234_some_bug'."
   (interactive "r")
   (let ((case-fold-search nil)
         (str (buffer-substring (mark) (point))))
@@ -350,22 +401,5 @@ If point was already at that position, move point to beginning of line."
     (setq str (downcase str))
     (kill-new (concat "ticket/" str))))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" default)))
- '(safe-local-variable-values
-   (quote
-    ((flycheck-clang-language-standard . c++14)
-     (flycheck-gcc-language-standard . c++14)
-     (flycheck-gcc-language-standard . c++11)))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(global-set-key (kbd "C-c g") 'magit-status)
+(global-set-key (kbd "C-c f") 'rgrep)
