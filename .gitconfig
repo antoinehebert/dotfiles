@@ -1,13 +1,14 @@
 [user]
         name = Antoine Hebert
-        email = hebert.antoine@gmail.com
+	email = antoine.hebert@autodesk.com
 [alias]
         st = status
         co = checkout
         ci = commit
         br = branch
         last = log -1 --stat HEAD
-        lg = log --oneline --graph --decorate --color
+#        lg = log --oneline --graph --decorate --color
+        lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(black)%s%C(reset) %C(white)- %an%C(reset)%C(auto)%d%C(reset)'
         lol = log --graph --decorate --color
         df = diff
         dff = diff --no-prefix -U10000
