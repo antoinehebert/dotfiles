@@ -14,8 +14,8 @@
 (setq c-default-style (quote ((c++-mode . "bsd") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
 (setq column-number-mode t)
 (setq compile-command "make -j5")
-(setq css-indent-offset 2)
-(setq jsx-indent-level 2)
+(setq css-indent-offset 4)
+(setq jsx-indent-level 4)
 
 (delete-selection-mode 1)
 (electric-indent-mode 1)
@@ -30,21 +30,13 @@
 (setq mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
 (setq python-continuation-offset 4)
 (setq python-indent 4)
-(setq sgml-basic-offset 2)
+(setq sgml-basic-offset 4)
 (show-paren-mode 1)
 (setq standard-indent 4)
 (setq tab-width 4)
 (setq inhibit-startup-message t) ;; stop showing emacs welcome screen
 (setq case-fold-search t)   ; make searches case insensitive
 (put 'upcase-region 'disabled nil)
-
-;; frame title
-(defun my/set-frame-title ()
-  "Frame title is current buffer full path."
-  (setq frame-title-format
-        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-
-(add-hook 'after-init-hook 'my/set-frame-title)
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -104,7 +96,10 @@
     material-theme
     org-bullets
     magit
-    json-mode))
+    json-mode
+    projectile
+    projectile-rails
+    flymake-ruby))
 
 (defun ah/install-packages (packages)
   "You know... install PACKAGES."
@@ -152,7 +147,12 @@
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
+(add-hook 'ruby-mode-hook 'projectile-mode)
+(add-hook 'projectile-mode-hook 'projectile-rails-on)
 (add-hook 'ruby-mode-hook #'rubocop-mode)
+
+(require 'flymake-ruby)
+(add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
 (require 'flx-ido)
 (ido-mode 1)
@@ -167,6 +167,7 @@
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 (require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;; Stolen from https://github.com/codesuki/add-node-modules-path/blob/master/add-node-modules-path.el
 (defun my/add-node-modules-path ()
@@ -194,10 +195,9 @@ If it's found, then add it to `exec-path`."
 (eval-after-load 'js2-mode
   '(add-hook 'js2-mode-hook 'my/add-node-modules-path))
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
 ;; disable jshint since we prefer eslint checking
-(setq-default flycheck-disabled-checkers
-              (append flycheck-disabled-checkers '(javascript-jshint)))
+;; (setq-default flycheck-disabled-checkers
+;;               (append flycheck-disabled-checkers '(javascript-jshint)))
 
 ;; use eslint javascript files
 (flycheck-add-mode 'javascript-eslint 'web-mode)
@@ -211,7 +211,7 @@ If it's found, then add it to `exec-path`."
     (if (executable-find eslint)
         (progn (call-process eslint nil "*ESLint Errors*" nil "--fix" buffer-file-name)
                (revert-buffer t t t))
-      (message "ESLint not found."))))
+      (message (concat eslint " not found.")))))
 
 (defun my/eslint-fix-after-save-hook ()
   "After save hook for my/eslint-fix."
@@ -258,6 +258,27 @@ If it's found, then add it to `exec-path`."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; frame title
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/set-frame-title ()
+  "Frame title is current buffer full path."
+  (setq frame-title-format
+        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
+(add-hook 'after-init-hook 'my/set-frame-title)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; don't grep these dirs
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(eval-after-load 'grep
+  '(progn
+     (add-to-list 'grep-find-ignored-directories "node_modules")
+     (add-to-list 'grep-find-ignored-directories "log")
+     (add-to-list 'grep-find-ignored-directories ".git")
+     (add-to-list 'grep-find-ignored-directories ".svn")
+     (add-to-list 'grep-find-ignored-directories "vendor")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; my custom commands
@@ -376,7 +397,7 @@ If point was already at that position, move point to beginning of line."
 (global-set-key (kbd "M-;") 'ah/comment-or-uncomment-region-or-line)
 
 (defun my/ticket-description-to-branch-name (start end)
-  "Turns '#41234: Some Bug' => 'ticket/41234_some_bug'."
+  "Turn START to END selection to git branch name."
   (interactive "r")
   (let ((case-fold-search nil)
         (str (buffer-substring (mark) (point))))
