@@ -165,6 +165,7 @@
 ;; use the right modes for javascript files
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(setq js2-strict-trailing-comma-warning nil)
 
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -408,4 +409,3 @@ If point was already at that position, move point to beginning of line."
 
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key (kbd "C-c f") 'rgrep)
-
