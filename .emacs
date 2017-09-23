@@ -129,7 +129,7 @@
 ;; (load-theme 'material-light t)
 (load-theme 'monokai t)
 (when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :family "Inconsolata" :height 160)
+  (set-face-attribute 'default nil :font "Inconsolata-14")
   )
 
 (require 'multiple-cursors)
