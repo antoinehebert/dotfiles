@@ -39,7 +39,7 @@
 (put 'upcase-region 'disabled nil)
 
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
+;; (scroll-bar-mode -1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; custom keybindings
@@ -52,6 +52,8 @@
 ;; spelling
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (add-hook 'text-mode-hook 'flyspell-mode)
+
+(add-hook 'prog-mode-hook 'git-gutter-mode)
 
 ;; org-mode
 (defun my-org-mode-hook()
@@ -83,6 +85,7 @@
     haskell-mode
     wrap-region
     monokai-theme
+    gruvbox-theme
     multiple-cursors
     company ;; auto-complete
     yaml-mode
@@ -96,6 +99,7 @@
     material-theme
     org-bullets
     magit
+    git-gutter
     json-mode
     projectile
     projectile-rails
@@ -127,9 +131,9 @@
 
 ;; theme and font
 ;; (load-theme 'material-light t)
-(load-theme 'monokai t)
+(load-theme 'gruvbox t)
 (when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :font "Inconsolata-14")
+  (set-face-attribute 'default nil :font "Inconsolata-16")
   )
 
 (require 'multiple-cursors)
@@ -150,6 +154,8 @@
 (add-hook 'ruby-mode-hook 'projectile-mode)
 (add-hook 'projectile-mode-hook 'projectile-rails-on)
 (add-hook 'ruby-mode-hook #'rubocop-mode)
+
+(global-set-key (kbd "C-c t") 'projectile-find-file)
 
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
@@ -278,8 +284,7 @@ If it's found, then add it to `exec-path`."
      (add-to-list 'grep-find-ignored-directories "node_modules")
      (add-to-list 'grep-find-ignored-directories "log")
      (add-to-list 'grep-find-ignored-directories ".git")
-     (add-to-list 'grep-find-ignored-directories ".svn")
-     (add-to-list 'grep-find-ignored-directories "vendor")))
+     (add-to-list 'grep-find-ignored-directories ".svn")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; my custom commands
@@ -409,3 +414,21 @@ If point was already at that position, move point to beginning of line."
 
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key (kbd "C-c f") 'rgrep)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("f6a935e77513ba40014aa8467c35961fdb1fc936fa48407ed437083a7ad932de" "c7a9a68bd07e38620a5508fef62ec079d274475c8f92d75ed0c33c45fbe306bc" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" default)))
+ '(package-selected-packages
+   (quote
+    (rust-mode gruvbox-theme solarized-theme git-gutter dockerfile-mode yaml-mode wrap-region web-mode rubocop robe rbenv rainbow-delimiters projectile-rails prettier-js powerline org-bullets multiple-cursors monokai-theme material-theme markdown-mode magit linum-relative json-mode js2-mode haskell-mode flymake-ruby flycheck flx-ido fiplr fill-column-indicator expand-region exec-path-from-shell eslint-fix ctags-update company ac-etags)))
+ '(projectile-mode t nil (projectile)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
