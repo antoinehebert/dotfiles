@@ -406,11 +406,14 @@ If point was already at that position, move point to beginning of line."
   "Turn START to END selection to git branch name."
   (interactive "r")
   (let ((case-fold-search nil)
-        (str (buffer-substring (mark) (point))))
+        (str (buffer-substring (mark) (point)))
+        (ticket ""))
+    (setq ticket (car (split-string str " ")))
+    (setq str (mapconcat 'identity (cdr (split-string str " ")) "_"))
     (setq str (replace-regexp-in-string "\\([^0-9a-zA-Z]+\\)" "_" str))
     (setq str (replace-regexp-in-string "^_*" "" str))
-    (setq str (downcase str))
-    (kill-new (concat "ticket/" str))))
+    ;(setq str (downcase str))
+    (kill-new (concat "ticket/" ticket "_" str))))
 
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key (kbd "C-c f") 'rgrep)
