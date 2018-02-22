@@ -284,7 +284,9 @@ If it's found, then add it to `exec-path`."
      (add-to-list 'grep-find-ignored-directories "node_modules")
      (add-to-list 'grep-find-ignored-directories "log")
      (add-to-list 'grep-find-ignored-directories ".git")
-     (add-to-list 'grep-find-ignored-directories ".svn")))
+     (add-to-list 'grep-find-ignored-directories ".svn")
+     (add-to-list 'grep-find-ignored-files ".tags")
+     (add-to-list 'grep-find-ignored-files ".tags1")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; my custom commands
@@ -412,7 +414,7 @@ If point was already at that position, move point to beginning of line."
     (setq str (mapconcat 'identity (cdr (split-string str " ")) "_"))
     (setq str (replace-regexp-in-string "\\([^0-9a-zA-Z]+\\)" "_" str))
     (setq str (replace-regexp-in-string "^_*" "" str))
-    ;(setq str (downcase str))
+    (setq str (downcase str))
     (kill-new (concat "ticket/" ticket "_" str))))
 
 (global-set-key (kbd "C-c g") 'magit-status)
