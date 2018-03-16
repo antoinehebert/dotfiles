@@ -417,6 +417,18 @@ If point was already at that position, move point to beginning of line."
     (setq str (downcase str))
     (kill-new (concat "ticket/" ticket "_" str))))
 
+(defun sort-words (reverse beg end)
+  "Sort words in region alphabetically, in REVERSE if negative.
+    Prefixed with negative \\[universal-argument], sorts in reverse.
+
+    The variable `sort-fold-case' determines whether alphabetic case
+    affects the sort order.
+
+    See `sort-regexp-fields'."
+  (interactive "*P\nr")
+  (sort-regexp-fields reverse "\\w+" "\\&" beg end))
+
+
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key (kbd "C-c f") 'rgrep)
 (custom-set-variables
