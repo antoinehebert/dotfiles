@@ -1,6 +1,5 @@
-# SVN Editor
+# Editor
 export EDITOR=emacs
-export MAKEFLAGS=-j$(grep -c '^processor' /proc/cpuinfo)
 
 PATH=$PATH:$HOME/.local/bin:$HOME/bin
 export PATH
