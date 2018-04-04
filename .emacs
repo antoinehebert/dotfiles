@@ -410,7 +410,7 @@ If point was already at that position, move point to beginning of line."
   (let ((case-fold-search nil)
         (str (buffer-substring (mark) (point)))
         (ticket ""))
-    (setq ticket (car (split-string str " ")))
+    (setq ticket (car (split-string str "[: ]")))
     (setq str (mapconcat 'identity (cdr (split-string str " ")) "_"))
     (setq str (replace-regexp-in-string "\\([^0-9a-zA-Z]+\\)" "_" str))
     (setq str (replace-regexp-in-string "^_*" "" str))
