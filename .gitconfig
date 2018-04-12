@@ -16,3 +16,4 @@
 	default = simple
 [diff]
 	tool = meld
+  colorMoved = default
