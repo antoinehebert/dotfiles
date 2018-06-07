@@ -56,6 +56,9 @@
 
 (add-hook 'prog-mode-hook 'git-gutter-mode)
 
+(setq column-enforce-column 120)
+(add-hook 'prog-mode-hook 'column-enforce-mode)
+
 ;; org-mode
 (defun my-org-mode-hook()
   (org-indent-mode t)
@@ -104,7 +107,8 @@
     json-mode
     projectile
     projectile-rails
-    flymake-ruby))
+    flymake-ruby
+    column-enforce-mode))
 
 (defun ah/install-packages (packages)
   "You know... install PACKAGES."
@@ -141,8 +145,8 @@
 (global-set-key (kbd "C-c c") 'mc/edit-lines)
 (global-set-key (kbd "C-c n") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-c N") 'mc/skip-to-next-like-this)
-(global-set-key (kbd "C-c p") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c P") 'mc/skip-to-previous-like-this)
+;; (global-set-key (kbd "C-c p") 'mc/mark-previous-like-this)
+;; (global-set-key (kbd "C-c P") 'mc/skip-to-previous-like-this)
 (global-set-key (kbd "C-c m") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
@@ -152,11 +156,13 @@
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
+(setq projectile-keymap-prefix (kbd "C-c C-p"))
 (add-hook 'ruby-mode-hook 'projectile-mode)
 (add-hook 'projectile-mode-hook 'projectile-rails-on)
 (add-hook 'ruby-mode-hook #'rubocop-mode)
+(setq ruby-insert-encoding-magic-comment nil)
 
-(global-set-key (kbd "C-c t") 'projectile-find-file)
+(global-set-key (kbd "C-c p") 'projectile-find-file)
 
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
@@ -311,8 +317,8 @@ If it's found, then add it to `exec-path`."
     (replace-match (number-to-string (1- (string-to-number (match-string 0)))))
     (move-to-column col))
   )
-(global-set-key (kbd "C-c a") 'increment-number-at-point)
-(global-set-key (kbd "C-c A") 'decrement-number-at-point)
+(global-set-key (kbd "C-c +") 'increment-number-at-point)
+(global-set-key (kbd "C-c -") 'decrement-number-at-point)
 
 (defun duplicate-line()
   (interactive)
@@ -411,10 +417,18 @@ If point was already at that position, move point to beginning of line."
   (let ((case-fold-search nil)
         (str (buffer-substring (mark) (point)))
         (ticket ""))
+    ;; use tag name for org-mode links
+    (setq str (replace-regexp-in-string "^\\[\\[.*\\]\\[\\(.*\\)\\]\\]:" "\\1:" str))
+    ;; depending on the selection we sometimes only get the last part of the link "tag_name]]"...\
+    (setq str (replace-regexp-in-string "^\\(.*\\)\\]\\]:" "\\1:" str))
+    ;; extract ticket number
     (setq ticket (car (split-string str "[: ]")))
     (setq str (mapconcat 'identity (cdr (split-string str " ")) "_"))
-    (setq str (replace-regexp-in-string "\\([^0-9a-zA-Z]+\\)" "_" str))
-    (setq str (replace-regexp-in-string "^_*" "" str))
+    (setq str (replace-regexp-in-string "[^0-9a-zA-Z]+" "_" str))
+    ;; (setq str (replace-regexp-in-string "^_*" "" str))
+    ;; (setq str (replace-regexp-in-string "_*$" "" str))
+    (setq str (string-remove-prefix "_" str))
+    (setq str (string-remove-suffix "_" str))
     (setq str (downcase str))
     (kill-new (concat "ticket/" ticket "_" str))))
 
@@ -430,8 +444,13 @@ If point was already at that position, move point to beginning of line."
   (sort-regexp-fields reverse "\\w+" "\\&" beg end))
 
 
-(global-set-key (kbd "C-c g") 'magit-status)
+(global-set-key (kbd "C-c g s") 'magit-status)
+(global-set-key (kbd "C-c g n") 'git-gutter:next-diff)
+(global-set-key (kbd "C-c g p") 'git-gutter:previous-diff)
 (global-set-key (kbd "C-c f") 'rgrep)
+(global-set-key (kbd "C-c a") 'align-regexp)
+(global-set-key (kbd "M-z") 'zap-up-to-char)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -442,7 +461,7 @@ If point was already at that position, move point to beginning of line."
     ("f6a935e77513ba40014aa8467c35961fdb1fc936fa48407ed437083a7ad932de" "c7a9a68bd07e38620a5508fef62ec079d274475c8f92d75ed0c33c45fbe306bc" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" default)))
  '(package-selected-packages
    (quote
-    (rust-mode gruvbox-theme solarized-theme git-gutter dockerfile-mode yaml-mode wrap-region web-mode rubocop robe rbenv rainbow-delimiters projectile-rails prettier-js powerline org-bullets multiple-cursors monokai-theme material-theme markdown-mode magit linum-relative json-mode js2-mode haskell-mode flymake-ruby flycheck flx-ido fiplr fill-column-indicator expand-region exec-path-from-shell eslint-fix ctags-update company ac-etags)))
+    (column-enforce-mode github-browse-file rust-mode gruvbox-theme solarized-theme git-gutter dockerfile-mode yaml-mode wrap-region web-mode rubocop robe rbenv rainbow-delimiters projectile-rails prettier-js powerline org-bullets multiple-cursors monokai-theme material-theme markdown-mode magit linum-relative json-mode js2-mode haskell-mode flymake-ruby flycheck flx-ido fiplr fill-column-indicator expand-region exec-path-from-shell eslint-fix ctags-update company ac-etags)))
  '(projectile-mode t nil (projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -1,5 +1,5 @@
 [user]
-        name = Antoine Hebert
+	name = Antoine Hebert
 	email = antoine.hebert@autodesk.com
 [alias]
         st = status
@@ -12,8 +12,27 @@
         lol = log --graph --decorate --color
         df = diff
         dff = diff --no-prefix -U10000
+        dft = difftool -d master...HEAD
 [push]
 	default = simple
 [diff]
-	tool = meld
   colorMoved = default
+	guitool = meld
+	tool = kdiff3
+[merge]
+	tool = kdiff3
+[mergetool "kdiff3"]
+	path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
+	trustExitCode = false
+[difftool]
+	prompt = false
+[difftool "kdiff3"]
+	path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
+	trustExitCode = false
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[difftool "meld"]
+	path = /Applications/Meld.app/Contents/MacOS/Meld
