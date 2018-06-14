@@ -12,7 +12,7 @@
         lol = log --graph --decorate --color
         df = diff
         dff = diff --no-prefix -U10000
-        dft = difftool -d master...HEAD
+        dt = difftool -d
 [push]
 	default = simple
 [diff]
