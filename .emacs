@@ -461,6 +461,7 @@ If point was already at that position, move point to beginning of line."
 (global-set-key (kbd "C-c g s") 'magit-status)
 (global-set-key (kbd "C-c g n") 'git-gutter:next-diff)
 (global-set-key (kbd "C-c g p") 'git-gutter:previous-diff)
+(global-set-key (kbd "C-c g d") 'git-gutter:popup-hunk)
 (global-set-key (kbd "C-c f") 'rgrep)
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "M-z") 'zap-up-to-char)
