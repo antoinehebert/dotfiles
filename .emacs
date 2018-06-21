@@ -67,7 +67,6 @@
   )
 (add-hook 'org-mode-hook 'my-org-mode-hook)
 
-
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (setq org-ellipsis "⤵")
@@ -254,7 +253,7 @@ If it's found, then add it to `exec-path`."
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
-(add-hook 'prog-mode-hook (lambda () (idle-highlight-mode t)))
+(add-hook 'prog-mode-hook 'idle-highlight-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido customization
