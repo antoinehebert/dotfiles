@@ -108,7 +108,7 @@
     projectile-rails
     flymake-ruby
     column-enforce-mode
-    idle-highlight))
+    idle-highlight-mode))
 
 (defun ah/install-packages (packages)
   "You know... install PACKAGES."
