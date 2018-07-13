@@ -6,11 +6,11 @@ function md() {
 # find shorthand
 function f() {
    if [ $2 ]; then
-      find $1 -iname "$2"
+      find $1 -iname "*$2*"
    else
-      find . -iname "$1"
+      find . -iname "*$1*"
    fi
-}   
+}
 
 # Start an HTTP server from a directory, optionally specifying the port
 function server() {
@@ -98,14 +98,14 @@ gifify() {
 
 # hop sftp|ssh|scp through a server
 hop() {
-  cmd_regex="^(ssh|scp|sftp)$" 
+  cmd_regex="^(ssh|scp|sftp)$"
   if [[ "$1" == "-h" || "$1" == "-?" || ! "$1" =~ $cmd_regex ]]; then
     echo "usage: hop command server1 server2"
     echo ""
     echo "command can be ssh scp or sftp"
     echo "example:"
-    echo "$ hop sftp root@evelocity-test root@30A02P"
-    echo "$ hop scp root@evelocity-test root@30A02P:/opt/opto/data/optoscreener/DirectoryToMonitor/*.sr ."
+    echo "$ hop sftp root@some-server root@another-server"
+    echo "$ hop scp root@some-server root@another-server:/path/to/a/file ."
     return 0
   fi
   cmd=$1
@@ -118,4 +118,3 @@ hop() {
 svndf() {
   svn diff "$@" | colordiff | less -R
 }
-
