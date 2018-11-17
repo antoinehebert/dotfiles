@@ -108,13 +108,18 @@
     projectile-rails
     flymake-ruby
     column-enforce-mode
-    idle-highlight-mode))
+    idle-highlight-mode
+    rust-mode
+    ripgrep
+    ;; use-package
+    ))
 
 (defun ah/install-packages (packages)
   "You know... install PACKAGES."
   (interactive)
   (dolist (p packages)
-    (when (not (package-installed-p p))
+    (unless (package-installed-p p)
+      (package-refresh-contents)
       (package-install p))))
 (ah/install-packages user-packages)
 
@@ -152,6 +157,15 @@
 
 (add-hook 'after-init-hook 'global-company-mode) ; this or auto-complete?
 (setq company-dabbrev-downcase nil)
+
+;; (require 'use-package)
+;; (use-package auto-complete
+;;              :ensure  t
+;;              :init
+;;              (progn
+;;                (ac-config-default)
+;;                (global-auto-complete-mode t)
+;;                ))
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
@@ -462,7 +476,8 @@ If point was already at that position, move point to beginning of line."
 (global-set-key (kbd "C-c g n") 'git-gutter:next-diff)
 (global-set-key (kbd "C-c g p") 'git-gutter:previous-diff)
 (global-set-key (kbd "C-c g d") 'git-gutter:popup-hunk)
-(global-set-key (kbd "C-c f") 'rgrep)
+;; (global-set-key (kbd "C-c f") 'rgrep)
+(global-set-key (kbd "C-c f") 'ripgrep-regexp)
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 (global-set-key (kbd "C-c ?") 'my/google)
@@ -477,7 +492,7 @@ If point was already at that position, move point to beginning of line."
     ("f6a935e77513ba40014aa8467c35961fdb1fc936fa48407ed437083a7ad932de" "c7a9a68bd07e38620a5508fef62ec079d274475c8f92d75ed0c33c45fbe306bc" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" default)))
  '(package-selected-packages
    (quote
-    (idle-highlight-mode column-enforce-mode github-browse-file rust-mode gruvbox-theme solarized-theme git-gutter dockerfile-mode yaml-mode wrap-region web-mode rubocop robe rbenv rainbow-delimiters projectile-rails prettier-js powerline org-bullets multiple-cursors monokai-theme material-theme markdown-mode magit linum-relative json-mode js2-mode haskell-mode flymake-ruby flycheck flx-ido fiplr fill-column-indicator expand-region exec-path-from-shell eslint-fix ctags-update company ac-etags)))
+    (ripgrep idle-highlight-mode column-enforce-mode github-browse-file rust-mode gruvbox-theme solarized-theme git-gutter dockerfile-mode yaml-mode wrap-region web-mode rubocop robe rbenv rainbow-delimiters projectile-rails prettier-js powerline org-bullets multiple-cursors monokai-theme material-theme markdown-mode magit linum-relative json-mode js2-mode haskell-mode flymake-ruby flycheck flx-ido fiplr fill-column-indicator expand-region exec-path-from-shell eslint-fix ctags-update company ac-etags)))
  '(projectile-mode t nil (projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
