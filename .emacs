@@ -109,9 +109,8 @@
     flymake-ruby
     column-enforce-mode
     idle-highlight-mode
-    rust-mode
     ripgrep
-    ;; use-package
+    use-package
     ))
 
 (defun ah/install-packages (packages)
@@ -158,15 +157,6 @@
 (add-hook 'after-init-hook 'global-company-mode) ; this or auto-complete?
 (setq company-dabbrev-downcase nil)
 
-;; (require 'use-package)
-;; (use-package auto-complete
-;;              :ensure  t
-;;              :init
-;;              (progn
-;;                (ac-config-default)
-;;                (global-auto-complete-mode t)
-;;                ))
-
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
@@ -196,6 +186,28 @@
 
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+
+(use-package try
+  :commands try)
+
+(use-package rust-mode
+  :defer t
+  :mode "\\.rs\\'"
+  :config (setq rust-format-on-save t))
+
+;; Run cargo commands in rust buffers, e.g. C-c C-c C-r for cargo-run
+(use-package cargo
+  :ensure t
+  :init
+  (add-hook 'rust-mode-hook 'cargo-minor-mode)
+  (add-hook 'toml-mode-hook 'cargo-minor-mode))
+
+(use-package flycheck-rust
+  :ensure t
+  :init
+  (with-eval-after-load 'rust-mode
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
+
 
 ;; Stolen from https://github.com/codesuki/add-node-modules-path/blob/master/add-node-modules-path.el
 (defun my/add-node-modules-path ()
@@ -490,9 +502,10 @@ If point was already at that position, move point to beginning of line."
  '(custom-safe-themes
    (quote
     ("f6a935e77513ba40014aa8467c35961fdb1fc936fa48407ed437083a7ad932de" "c7a9a68bd07e38620a5508fef62ec079d274475c8f92d75ed0c33c45fbe306bc" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" default)))
+ '(ivy-mode t)
  '(package-selected-packages
    (quote
-    (ripgrep idle-highlight-mode column-enforce-mode github-browse-file rust-mode gruvbox-theme solarized-theme git-gutter dockerfile-mode yaml-mode wrap-region web-mode rubocop robe rbenv rainbow-delimiters projectile-rails prettier-js powerline org-bullets multiple-cursors monokai-theme material-theme markdown-mode magit linum-relative json-mode js2-mode haskell-mode flymake-ruby flycheck flx-ido fiplr fill-column-indicator expand-region exec-path-from-shell eslint-fix ctags-update company ac-etags)))
+    (graphviz-dot-mode flycheck-rust ripgrep idle-highlight-mode column-enforce-mode github-browse-file rust-mode gruvbox-theme solarized-theme git-gutter dockerfile-mode yaml-mode wrap-region web-mode rubocop robe rbenv rainbow-delimiters projectile-rails prettier-js powerline org-bullets multiple-cursors monokai-theme material-theme markdown-mode magit linum-relative json-mode js2-mode haskell-mode flymake-ruby flycheck flx-ido fiplr fill-column-indicator expand-region exec-path-from-shell eslint-fix ctags-update company ac-etags)))
  '(projectile-mode t nil (projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
