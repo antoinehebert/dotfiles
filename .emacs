@@ -42,6 +42,10 @@
 ;; (scroll-bar-mode -1)
 (setq initial-scratch-message "")
 
+;; make S-<arrow> move windows
+(require 'windmove)
+(windmove-default-keybindings 'shift)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hooks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -104,7 +108,7 @@
     flymake-ruby
     column-enforce-mode
     idle-highlight-mode
-    ripgrep
+    rg ;; ripgrep
     use-package
     ))
 
@@ -179,8 +183,9 @@
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (setq js2-strict-trailing-comma-warning nil)
 
-(require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
 
 (use-package try
   :commands try)
@@ -203,6 +208,13 @@
   (with-eval-after-load 'rust-mode
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
+(use-package buffer-move
+  :ensure t
+  :init
+  (global-set-key (kbd "<C-S-up>")     'buf-move-up)
+  (global-set-key (kbd "<C-S-down>")   'buf-move-down)
+  (global-set-key (kbd "<C-S-left>")   'buf-move-left)
+  (global-set-key (kbd "<C-S-right>")  'buf-move-right))
 
 ;; Stolen from https://github.com/codesuki/add-node-modules-path/blob/master/add-node-modules-path.el
 (defun my/add-node-modules-path ()
@@ -275,6 +287,9 @@ If it's found, then add it to `exec-path`."
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 (add-hook 'prog-mode-hook 'idle-highlight-mode)
+
+(require 'rg)
+;; if you want default ripgrep (rg) keybindings just run this: `(rg-enable-default-bindings)`
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido customization
@@ -354,7 +369,7 @@ If it's found, then add it to `exec-path`."
     (yank)
     (move-to-column col))
   )
-(global-set-key (kbd "C-c d") 'duplicate-line)
+(global-set-key (kbd "M-S-<down>") 'duplicate-line)
 
 (defun move-line-up(&optional arg)
   (interactive "p")
@@ -373,8 +388,8 @@ If it's found, then add it to `exec-path`."
       (previous-line 1))
     (move-to-column col))
   )
-(global-set-key (kbd "C-c k") 'move-line-up)
-(global-set-key (kbd "C-c j") 'move-line-down)
+(global-set-key (kbd "M-<up>") 'move-line-up)
+(global-set-key (kbd "M-<down>") 'move-line-down)
 
 (defun vi-open-line-above ()
   "Insert a newline above the current line and put point at beginning."
@@ -393,8 +408,9 @@ If it's found, then add it to `exec-path`."
   (newline-and-indent))
 
 (global-set-key (kbd "C-c o") 'vi-open-line-below)
+(global-set-key (kbd "M-<return>") 'vi-open-line-below)
 (global-set-key (kbd "C-c O") 'vi-open-line-above)
-
+(global-set-key (kbd "M-S-<return>") 'vi-open-line-above)
 (global-set-key (kbd "C-c h") 'ff-find-related-file) ;; h is for header since I used f for rgrep already...
 
 (defun smart-beginning-of-line ()
@@ -483,13 +499,19 @@ If point was already at that position, move point to beginning of line."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "<f5>") 'sort-lines)
 (global-set-key (kbd "C-c g s") 'magit-status)
-(global-set-key (kbd "C-c g p") 'magit-dispatch-popup)
+;; (global-set-key (kbd "C-c g g") 'magit-dispatch-popup)
 (global-set-key (kbd "C-c g b") 'magit-blame)
 (global-set-key (kbd "C-c g n") 'git-gutter:next-diff)
 (global-set-key (kbd "C-c g p") 'git-gutter:previous-diff)
 (global-set-key (kbd "C-c g d") 'git-gutter:popup-hunk)
 ;; (global-set-key (kbd "C-c f") 'rgrep)
-(global-set-key (kbd "C-c f") 'ripgrep-regexp)
+;; (global-set-key (kbd "C-c f") 'ripgrep-regexp)
+(global-set-key (kbd "C-c f") 'rg)
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 (global-set-key (kbd "C-c ?") 'my/google)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; END
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
