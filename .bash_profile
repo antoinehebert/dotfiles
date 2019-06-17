@@ -1,21 +1,26 @@
 # Load ~/.extra, ~/.bash_prompt, ~/.exports, ~/.aliases and ~/.functions
 # ~/.extra can be used for settings you don’t want to commit
 for file in ~/.{extra,bash_prompt,exports,aliases,functions}; do
-   [ -r "$file" ] && source "$file"
+    [ -r "$file" ] && source "$file"
 done
 unset file
 
 # node, nvm & npm
-if [ -r ~/.nvm/nvm.sh ]; then
-  source ~/.nvm/nvm.sh
-  source ${NVM_DIR}/bash_completion
-  . <(npm completion)
+if [ -r $HOME/.nvm/nvm.sh ]; then
+    source $HOME/.nvm/nvm.sh
+    source ${NVM_DIR}/bash_completion
+    . <(npm completion)
 fi
 
 # rbenv setup
 if [ -r $HOME/.rbenv/bin -o -r /usr/local/bin/rbenv ]; then
-  export PATH="$HOME/.rbenv/bin:$PATH"
-  eval "$(rbenv init -)"
+    export PATH="$PATH:$HOME/.rbenv/bin"
+    eval "$(rbenv init -)"
+fi
+
+# Rust
+if [ -r $HOME/.cargo/bin/ ]; then
+    export PATH="$PATH:$HOME/.cargo/bin"
 fi
 
 # make z command available
