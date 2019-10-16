@@ -137,9 +137,13 @@
 
 (wrap-region-global-mode t)
 
+;; themes that are not packages are in this folder.
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+
 ;; theme and font
 ;; (load-theme 'material-light t)
-(load-theme 'gruvbox t)
+;; (load-theme 'gruvbox t)
+(load-theme 'wilmersdorf t) ;; no package for this one, don't push this to the repo unless we add themes folder there too.
 (when (eq system-type 'darwin)
   (set-face-attribute 'default nil :font "Inconsolata-16")
   )
@@ -185,7 +189,8 @@
 
 (use-package flycheck
   :ensure t
-  :init (global-flycheck-mode))
+  :init (global-flycheck-mode)
+  :config (setq-default flycheck-disabled-checkers '(ruby-reek)))
 
 (use-package try
   :commands try)
@@ -215,6 +220,38 @@
   (global-set-key (kbd "<C-S-down>")   'buf-move-down)
   (global-set-key (kbd "<C-S-left>")   'buf-move-left)
   (global-set-key (kbd "<C-S-right>")  'buf-move-right))
+
+;; (use-package dumb-jump
+;;   :ensure t
+;;   :bind (("C-c j o" . dumb-jump-go-other-window)
+;;          ("C-c j j" . dumb-jump-go)
+;;          ;; ("M-." . dumb-jump-go)
+;;          ("C-c j p" . dumb-jump-go-prompt)
+;;          ("C-c j b" . dumb-jump-back)
+;;          ;; ("m->" . dumb-jump-back)
+;;          )
+;;   :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
+;;   :ensure)
+
+(use-package yasnippet
+  :ensure t
+  :init (yas-global-mode 1))
+
+
+;; (use-package ivy
+;;   :ensure t
+;;   :config (setq ivy-use-virtual-buffers t
+;;                 ivy-count-format "%d/%d ")
+;;   :bind (("C-s" . 'swiper)
+;;          ("M-x" . 'counsel-M-x)
+;;          ("C-x C-f" . 'counsel-find-file)
+;;          ("C-x b" . 'ivy-switch-buffer)
+;;          ;; ("<f1> f" . 'counsel-describe-function)
+;;          ;; ("<f1> v" . 'counsel-describe-variable)
+;;          ;; ("<f1> l" . 'counsel-find-library)
+;;          ;; ("<f2> i" . 'counsel-info-lookup-symbol)
+;;          ;; ("<f2> u" . 'counsel-unicode-char)
+;;          ))
 
 ;; Stolen from https://github.com/codesuki/add-node-modules-path/blob/master/add-node-modules-path.el
 (defun my/add-node-modules-path ()
@@ -270,8 +307,11 @@ If it's found, then add it to `exec-path`."
 (eval-after-load 'js2-mode
   '(add-hook 'js2-mode-hook 'my/eslint-fix-after-save-hook))
 
-(eval-after-load 'web2-mode
+(eval-after-load 'web-mode
   '(add-hook 'web-mode-hook 'my/eslint-fix-after-save-hook))
+
+(eval-after-load 'web2-mode
+  '(add-hook 'web2-mode-hook 'my/eslint-fix-after-save-hook))
 
 
 (require 'rbenv)
@@ -296,14 +336,14 @@ If it's found, then add it to `exec-path`."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Display ido results vertically, rather than horizontally
-(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
-(defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
-(add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
-;; use up and down arrows in vertical mode
-(defun ido-define-keys ()
-  (define-key ido-completion-map [down] 'ido-next-match)
-  (define-key ido-completion-map [up] 'ido-prev-match))
-(add-hook 'ido-setup-hook 'ido-define-keys)
+;; (setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
+;; (defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
+;; (add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
+;; ;; use up and down arrows in vertical mode
+;; (defun ido-define-keys ()
+;;   (define-key ido-completion-map [down] 'ido-next-match)
+;;   (define-key ido-completion-map [up] 'ido-prev-match))
+;; (add-hook 'ido-setup-hook 'ido-define-keys)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Customize buffer names
@@ -514,4 +554,3 @@ If point was already at that position, move point to beginning of line."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; END
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
