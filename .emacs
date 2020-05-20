@@ -19,7 +19,7 @@
 
 (delete-selection-mode 1)
 (electric-indent-mode 1)
-(electric-pair-mode 1) ; auto-pairs, inserting `(` will insert `()`
+;; (electric-pair-mode 1) ; auto-pairs, inserting `(` will insert `()`
 (setq-default fill-column 80)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
@@ -63,6 +63,7 @@
   (org-indent-mode t)
   (visual-line-mode t)
   (org-bullets-mode t)
+  (local-set-key (kbd "M-<return>") 'org-meta-return) ; Disable custom "open line" command
   )
 (add-hook 'org-mode-hook 'my-org-mode-hook)
 
@@ -143,10 +144,41 @@
 ;; theme and font
 ;; (load-theme 'material-light t)
 ;; (load-theme 'gruvbox t)
-(load-theme 'wilmersdorf t) ;; no package for this one, don't push this to the repo unless we add themes folder there too.
+;; (load-theme 'wilmersdorf t) ;; no package for this one, don't push this to the repo unless we add themes folder there too.
 (when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :font "Inconsolata-16")
+  (set-face-attribute 'default nil :font "consolas-16")
+  ;; (set-face-attribute 'default nil :font "IBM Plex Mono-16")
   )
+
+;;
+;; START THEME -- Figure out a way of doing this properly...
+;;
+(custom-set-faces
+ ;; '(default ((t (:foreground "#d3b58d" :background "#041818"))))
+ '(default ((t (:foreground "#d3b58d" :background "#072626"))))
+ '(custom-group-tag-face ((t (:underline t :foreground "lightblue"))) t)
+ '(custom-variable-tag-face ((t (:underline t :foreground "lightblue"))) t)
+ '(font-lock-builtin-face ((t nil)))
+ '(font-lock-comment-face ((t (:foreground "#3fdf1f"))))
+ '(font-lock-keyword-face ((t (:foreground "white"))))
+ '(font-lock-funciton-name-face ((((class color) (background dark)) (:foreground "white"))))
+ '(font-lock-variable-name-face ((((class color) (background dark)) (:foreground "#c8d4ec"))))
+ '(font-lock-string-face ((t (:foreground "#0fdfaf"))))
+ '(font-lock-warning-face ((t (:foreground "#504038"))))
+ '(highlight ((t (:foreground "navyblue" :background "#darkseagreen2"))))
+ '(mode-line ((t (:inverse-video t))))
+ '(region ((t (:background "blue"))))
+ '(widget-field-face ((t (:foreground "white"))))
+ '(widget-single-line-field-face ((t (:foreground "darkgray"))) t)
+ )
+
+(set-cursor-color "lightgreen")
+(set-background-color "#072626")
+
+(set-face-foreground 'font-lock-builtin-face "lightgreen")
+;;
+;; END THEME
+;;
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c c") 'mc/edit-lines)
@@ -323,8 +355,8 @@ If it's found, then add it to `exec-path`."
 (global-set-key (kbd "C-=") 'er/expand-region)
 (global-set-key (kbd "C-+") 'er/contract-region)
 
-(require 'rainbow-delimiters)
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+;; (require 'rainbow-delimiters)
+;; (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 (add-hook 'prog-mode-hook 'idle-highlight-mode)
 
@@ -513,7 +545,9 @@ If point was already at that position, move point to beginning of line."
 
 (defun sort-words (reverse beg end)
   "Sort words in region alphabetically, in REVERSE if negative.
-    Prefixed with negative \\[universal-argument], sorts in reverse.
+
+    Prefixed with negative \\[universal-argument], sorts in
+    reverse.
 
     The variable `sort-fold-case' determines whether alphabetic case
     affects the sort order.
@@ -533,6 +567,15 @@ If point was already at that position, move point to beginning of line."
     (if mark-active
         (buffer-substring (region-beginning) (region-end))
       (read-string "Google: ")))))
+
+(defun my/fill-to-end (char)
+  "Function my/fill-to-end fills the line with CHAR until FILL-COLUMN."
+  (interactive "cFill Character:")
+  ;;(save-excursion
+    ;;(end-of-line)
+    (while (< (current-column) fill-column)
+      (insert-char char)));;)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; custom keybindings
