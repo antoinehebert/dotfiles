@@ -556,14 +556,15 @@ If point was already at that position, move point to beginning of line."
   (interactive "*P\nr")
   (sort-regexp-fields reverse "\\w+" "\\&" beg end))
 
-(defun my/google ()
-  "Googles using the current language a query or region if any."
-  (interactive)
+(defun my/google (arg)
+  "Googles a mini-buffer query or region if any active.
+   The current language/mode is added to the search unless C-u is used."
+  (interactive "P")
   (browse-url
    (concat
     "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
-    (car (split-string (format "%s" major-mode) "-"))
-    " "
+    (unless arg
+        (concat (car (split-string (format "%s" major-mode) "-")) " "))
     (if mark-active
         (buffer-substring (region-beginning) (region-end))
       (read-string "Google: ")))))
