@@ -580,12 +580,15 @@ If point was already at that position, move point to beginning of line."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; custom keybindings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "<f5>") 'sort-lines)
-(global-set-key (kbd "C-c g s") 'magit-status)
+;; (global-set-key (kbd "<f5>") 'sort-lines)
+;; (global-set-key (kbd "C-c g s") 'magit-status)
+(global-set-key (kbd "C-c s") 'magit-status)
 ;; (global-set-key (kbd "C-c g g") 'magit-dispatch-popup)
 (global-set-key (kbd "C-c g b") 'magit-blame)
-(global-set-key (kbd "C-c g n") 'git-gutter:next-diff)
-(global-set-key (kbd "C-c g p") 'git-gutter:previous-diff)
+;; (global-set-key (kbd "C-c g n") 'git-gutter:next-diff)
+(global-set-key (kbd "<f5>") 'git-gutter:next-hunk)
+;; (global-set-key (kbd "C-c g p") 'git-gutter:previous-diff)
+(global-set-key (kbd "S-<f5>") 'git-gutter:previous-hunk)
 (global-set-key (kbd "C-c g d") 'git-gutter:popup-hunk)
 ;; (global-set-key (kbd "C-c f") 'rgrep)
 ;; (global-set-key (kbd "C-c f") 'ripgrep-regexp)
