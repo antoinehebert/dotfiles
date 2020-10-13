@@ -72,6 +72,15 @@
 (setq org-ellipsis "⤵")
 (setq org-bullets-bullet-list '("•"))
 
+;; org-agenda command that shows scheduled and closed items.-
+(setq org-agenda-custom-commands
+      '(("W" "Weekly review"
+         agenda ""
+         ((org-agenda-span 'week)
+          (org-agenda-start-on-weekday 0)
+          (org-agenda-start-with-log-mode '(closed))
+          ))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; packages
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -154,23 +163,25 @@
 ;; START THEME -- Figure out a way of doing this properly...
 ;;
 (custom-set-faces
- ;; '(default ((t (:foreground "#d3b58d" :background "#041818"))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:foreground "#d3b58d" :background "#072626"))))
  '(custom-group-tag-face ((t (:underline t :foreground "lightblue"))) t)
  '(custom-variable-tag-face ((t (:underline t :foreground "lightblue"))) t)
  '(font-lock-builtin-face ((t nil)))
  '(font-lock-comment-face ((t (:foreground "#3fdf1f"))))
- '(font-lock-keyword-face ((t (:foreground "white"))))
  '(font-lock-funciton-name-face ((((class color) (background dark)) (:foreground "white"))))
- '(font-lock-variable-name-face ((((class color) (background dark)) (:foreground "#c8d4ec"))))
+ '(font-lock-keyword-face ((t (:foreground "white"))))
  '(font-lock-string-face ((t (:foreground "#0fdfaf"))))
+ '(font-lock-variable-name-face ((((class color) (background dark)) (:foreground "#c8d4ec"))))
  '(font-lock-warning-face ((t (:foreground "#504038"))))
  '(highlight ((t (:foreground "navyblue" :background "#darkseagreen2"))))
  '(mode-line ((t (:inverse-video t))))
  '(region ((t (:background "blue"))))
  '(widget-field-face ((t (:foreground "white"))))
- '(widget-single-line-field-face ((t (:foreground "darkgray"))) t)
- )
+ '(widget-single-line-field-face ((t (:foreground "darkgray"))) t))
 
 (set-cursor-color "lightgreen")
 (set-background-color "#072626")
@@ -590,7 +601,7 @@ If point was already at that position, move point to beginning of line."
 (global-set-key (kbd "<f5>") 'git-gutter:next-hunk)
 ;; (global-set-key (kbd "C-c g p") 'git-gutter:previous-diff)
 (global-set-key (kbd "S-<f5>") 'git-gutter:previous-hunk)
-(global-set-key (kbd "C-c g d") 'git-gutter:popup-hunk)
+(global-set-key (kbd "C-c d") 'git-gutter:popup-hunk)
 ;; (global-set-key (kbd "C-c f") 'rgrep)
 ;; (global-set-key (kbd "C-c f") 'ripgrep-regexp)
 (global-set-key (kbd "C-c f") 'rg)
