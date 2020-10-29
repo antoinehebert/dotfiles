@@ -181,7 +181,8 @@
  '(mode-line ((t (:inverse-video t))))
  '(region ((t (:background "blue"))))
  '(widget-field-face ((t (:foreground "white"))))
- '(widget-single-line-field-face ((t (:foreground "darkgray"))) t))
+ '(widget-single-line-field-face ((t (:foreground "darkgray"))) t)
+ '(column-enforce-face ((t (:foreground "red")))))
 
 (set-cursor-color "lightgreen")
 (set-background-color "#072626")
@@ -596,7 +597,7 @@ If point was already at that position, move point to beginning of line."
 ;; (global-set-key (kbd "C-c g s") 'magit-status)
 (global-set-key (kbd "C-c s") 'magit-status)
 ;; (global-set-key (kbd "C-c g g") 'magit-dispatch-popup)
-(global-set-key (kbd "C-c g b") 'magit-blame)
+(global-set-key (kbd "C-c b") 'magit-blame)
 ;; (global-set-key (kbd "C-c g n") 'git-gutter:next-diff)
 (global-set-key (kbd "<f5>") 'git-gutter:next-hunk)
 ;; (global-set-key (kbd "C-c g p") 'git-gutter:previous-diff)
