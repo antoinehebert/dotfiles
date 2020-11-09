@@ -182,7 +182,7 @@
  '(region ((t (:background "blue"))))
  '(widget-field-face ((t (:foreground "white"))))
  '(widget-single-line-field-face ((t (:foreground "darkgray"))) t)
- '(column-enforce-face ((t (:foreground "red")))))
+ '(column-enforce-face ((t (:foreground "IndianRed2")))))
 
 (set-cursor-color "lightgreen")
 (set-background-color "#072626")
@@ -613,3 +613,4 @@ If point was already at that position, move point to beginning of line."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; END
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
