@@ -155,6 +155,7 @@
 ;; (load-theme 'gruvbox t)
 ;; (load-theme 'wilmersdorf t) ;; no package for this one, don't push this to the repo unless we add themes folder there too.
 (when (eq system-type 'darwin)
+  ;; (set-face-attribute 'default nil :font "source code pro-16")
   (set-face-attribute 'default nil :font "consolas-16")
   ;; (set-face-attribute 'default nil :font "IBM Plex Mono-16")
   )
@@ -168,6 +169,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:foreground "#d3b58d" :background "#072626"))))
+ '(column-enforce-face ((t (:foreground "IndianRed2"))))
  '(custom-group-tag-face ((t (:underline t :foreground "lightblue"))) t)
  '(custom-variable-tag-face ((t (:underline t :foreground "lightblue"))) t)
  '(font-lock-builtin-face ((t nil)))
@@ -181,8 +183,7 @@
  '(mode-line ((t (:inverse-video t))))
  '(region ((t (:background "blue"))))
  '(widget-field-face ((t (:foreground "white"))))
- '(widget-single-line-field-face ((t (:foreground "darkgray"))) t)
- '(column-enforce-face ((t (:foreground "IndianRed2")))))
+ '(widget-single-line-field-face ((t (:foreground "darkgray"))) t))
 
 (set-cursor-color "lightgreen")
 (set-background-color "#072626")
