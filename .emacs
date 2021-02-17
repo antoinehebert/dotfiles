@@ -50,6 +50,7 @@
 ;; hooks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; spelling
+(setq flyspell-issue-message-flag nil)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (add-hook 'text-mode-hook 'flyspell-mode)
 
@@ -156,8 +157,8 @@
 ;; (load-theme 'wilmersdorf t) ;; no package for this one, don't push this to the repo unless we add themes folder there too.
 (when (eq system-type 'darwin)
   ;; (set-face-attribute 'default nil :font "source code pro-16")
-  (set-face-attribute 'default nil :font "consolas-16")
-  ;; (set-face-attribute 'default nil :font "IBM Plex Mono-16")
+  ;; (set-face-attribute 'default nil :font "consolas-18")
+  (set-face-attribute 'default nil :font "IBM Plex Mono-18")
   )
 
 ;;
@@ -257,6 +258,13 @@
   :init
   (with-eval-after-load 'rust-mode
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
+
+(use-package lsp-mode
+    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+            (rust-mode . lsp)
+            ;; if you want which-key integration
+            (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
 
 (use-package buffer-move
   :ensure t
