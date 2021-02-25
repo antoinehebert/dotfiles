@@ -20,7 +20,7 @@
 (delete-selection-mode 1)
 (electric-indent-mode 1)
 ;; (electric-pair-mode 1) ; auto-pairs, inserting `(` will insert `()`
-(setq-default fill-column 80)
+(setq-default fill-column 120)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 (ido-mode 1)
@@ -259,12 +259,14 @@
   (with-eval-after-load 'rust-mode
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
+;; Language Server Protocol
 (use-package lsp-mode
-    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-            (rust-mode . lsp)
-            ;; if you want which-key integration
-            (lsp-mode . lsp-enable-which-key-integration))
-    :commands lsp)
+  :ensure t
+  :init
+  (add-hook 'rust-mode-hook #'lsp)
+  (add-hook 'ruby-mode-hook #'lsp)
+  )
+(use-package lsp-ui)
 
 (use-package buffer-move
   :ensure t
