@@ -42,10 +42,6 @@
 ;; (scroll-bar-mode -1)
 (setq initial-scratch-message "")
 
-;; make S-<arrow> move windows
-(require 'windmove)
-(windmove-default-keybindings 'shift)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hooks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -116,7 +112,7 @@
     json-mode
     projectile
     projectile-rails
-    flymake-ruby
+    ;; flymake-ruby ;; not necessary with lsp-mode?
     column-enforce-mode
     idle-highlight-mode
     rg ;; ripgrep
@@ -155,10 +151,12 @@
 ;; (load-theme 'material-light t)
 ;; (load-theme 'gruvbox t)
 ;; (load-theme 'wilmersdorf t) ;; no package for this one, don't push this to the repo unless we add themes folder there too.
+;; (load-theme 'naysayer t)
+
 (when (eq system-type 'darwin)
   ;; (set-face-attribute 'default nil :font "source code pro-16")
-  ;; (set-face-attribute 'default nil :font "consolas-18")
-  (set-face-attribute 'default nil :font "IBM Plex Mono-18")
+  (set-face-attribute 'default nil :font "consolas-18")
+  ;; (set-face-attribute 'default nil :font "IBM Plex Mono-18")
   )
 
 ;;
@@ -181,6 +179,9 @@
  '(font-lock-variable-name-face ((((class color) (background dark)) (:foreground "#c8d4ec"))))
  '(font-lock-warning-face ((t (:foreground "#504038"))))
  '(highlight ((t (:foreground "navyblue" :background "#darkseagreen2"))))
+ '(lsp-face-highlight-read ((t (:background "dimgrey" :foreground "#d3b58d"))))
+ '(lsp-face-highlight-write ((t (:background "dimgrey" :foreground "#d3b58d"))))
+ '(lsp-face-highlight-textual ((t (:background "dimgrey" :foreground "#d3b58d"))))
  '(mode-line ((t (:inverse-video t))))
  '(region ((t (:background "blue"))))
  '(widget-field-face ((t (:foreground "white"))))
@@ -217,8 +218,8 @@
 
 (global-set-key (kbd "C-c p") 'projectile-find-file)
 
-(require 'flymake-ruby)
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+;; (require 'flymake-ruby)
+;; (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
 (require 'flx-ido)
 (ido-mode 1)
@@ -265,16 +266,32 @@
   :init
   (add-hook 'rust-mode-hook #'lsp)
   (add-hook 'ruby-mode-hook #'lsp)
+  (add-hook 'js-mode-hook #'lsp)
+  (add-hook 'js2-mode-hook #'lsp)
+
+  ;; perf tweaks based on https://emacs-lsp.github.io/lsp-mode/page/performance/
+  (setq gc-cons-threshold 100000000)
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+  (setq lsp-idle-delay 0.500)
   )
-(use-package lsp-ui)
+(use-package lsp-ui
+  :ensure t)
 
 (use-package buffer-move
   :ensure t
   :init
-  (global-set-key (kbd "<C-S-up>")     'buf-move-up)
-  (global-set-key (kbd "<C-S-down>")   'buf-move-down)
-  (global-set-key (kbd "<C-S-left>")   'buf-move-left)
-  (global-set-key (kbd "<C-S-right>")  'buf-move-right))
+  (global-set-key (kbd "C-c <S-up>")     'buf-move-up)
+  (global-set-key (kbd "C-c <S-down>")   'buf-move-down)
+  (global-set-key (kbd "C-c <S-left>")   'buf-move-left)
+  (global-set-key (kbd "C-c <S-right>")  'buf-move-right))
+
+
+(require 'windmove)
+;; (windmove-default-keybindings 'shift) ;; make S-<arrow> move windows
+(global-set-key (kbd "C-c <up>")    'windmove-up)
+(global-set-key (kbd "C-c <down>")  'windmove-down)
+(global-set-key (kbd "C-c <left>")  'windmove-left)
+(global-set-key (kbd "C-c <right>") 'windmove-right)
 
 ;; (use-package dumb-jump
 ;;   :ensure t
@@ -502,9 +519,10 @@ If it's found, then add it to `exec-path`."
     (end-of-line))
   (newline-and-indent))
 
-(global-set-key (kbd "C-c o") 'vi-open-line-below)
+;; (global-set-key (kbd "C-c o") 'vi-open-line-below)
+(global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "M-<return>") 'vi-open-line-below)
-(global-set-key (kbd "C-c O") 'vi-open-line-above)
+;; (global-set-key (kbd "C-c O") 'vi-open-line-above)
 (global-set-key (kbd "M-S-<return>") 'vi-open-line-above)
 (global-set-key (kbd "C-c h") 'ff-find-related-file) ;; h is for header since I used f for rgrep already...
 
@@ -532,7 +550,7 @@ If point was already at that position, move point to beginning of line."
   (exchange-point-and-mark)
   )
 
-(global-set-key (kbd "C-c s") 'ah/delete-surround)
+(global-set-key (kbd "C-c <backspace>") 'ah/delete-surround)
 
 (defun ah/comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if there's no active region."
@@ -618,7 +636,7 @@ If point was already at that position, move point to beginning of line."
 ;; (global-set-key (kbd "C-c f") 'ripgrep-regexp)
 (global-set-key (kbd "C-c f") 'rg)
 (global-set-key (kbd "C-c a") 'align-regexp)
-(global-set-key (kbd "M-z") 'zap-up-to-char)
+;; (global-set-key (kbd "M-z") 'zap-up-to-char)
 (global-set-key (kbd "C-c ?") 'my/google)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
