@@ -52,8 +52,9 @@
 
 (add-hook 'prog-mode-hook 'git-gutter-mode)
 
-(setq column-enforce-column 120)
-(add-hook 'prog-mode-hook 'column-enforce-mode)
+;; (setq column-enforce-column 120)
+;; (add-hook 'prog-mode-hook 'column-enforce-mode)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode) ;; native alternative to column-enforce.
 
 ;; org-mode
 (defun my-org-mode-hook()
@@ -113,7 +114,7 @@
     projectile
     projectile-rails
     ;; flymake-ruby ;; not necessary with lsp-mode?
-    column-enforce-mode
+    ;; column-enforce-mode
     idle-highlight-mode
     rg ;; ripgrep
     use-package
@@ -168,7 +169,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:foreground "#d3b58d" :background "#072626"))))
- '(column-enforce-face ((t (:foreground "IndianRed2"))))
+ ;; '(column-enforce-face ((t (:foreground "IndianRed2"))))
  '(custom-group-tag-face ((t (:underline t :foreground "lightblue"))) t)
  '(custom-variable-tag-face ((t (:underline t :foreground "lightblue"))) t)
  '(font-lock-builtin-face ((t nil)))
@@ -180,8 +181,8 @@
  '(font-lock-warning-face ((t (:foreground "#504038"))))
  '(highlight ((t (:foreground "navyblue" :background "#darkseagreen2"))))
  '(lsp-face-highlight-read ((t (:background "dimgrey" :foreground "#d3b58d"))))
- '(lsp-face-highlight-write ((t (:background "dimgrey" :foreground "#d3b58d"))))
  '(lsp-face-highlight-textual ((t (:background "dimgrey" :foreground "#d3b58d"))))
+ '(lsp-face-highlight-write ((t (:background "dimgrey" :foreground "#d3b58d"))))
  '(mode-line ((t (:inverse-video t))))
  '(region ((t (:background "blue"))))
  '(widget-field-face ((t (:foreground "white"))))
@@ -324,6 +325,14 @@
 ;;          ;; ("<f2> i" . 'counsel-info-lookup-symbol)
 ;;          ;; ("<f2> u" . 'counsel-unicode-char)
 ;;          ))
+
+;;
+;; Lisp
+;;
+(use-package slime
+  :ensure t
+  :init
+  (setq inferior-lisp-program "sbcl"))
 
 ;; Stolen from https://github.com/codesuki/add-node-modules-path/blob/master/add-node-modules-path.el
 (defun my/add-node-modules-path ()
