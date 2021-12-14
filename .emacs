@@ -168,7 +168,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:foreground "#d3b58d" :background "#072626"))))
+ '(default ((t (:foreground "#d3b58d" :background "#0a2626"))))
  ;; '(column-enforce-face ((t (:foreground "IndianRed2"))))
  '(custom-group-tag-face ((t (:underline t :foreground "lightblue"))) t)
  '(custom-variable-tag-face ((t (:underline t :foreground "lightblue"))) t)
@@ -179,7 +179,7 @@
  '(font-lock-string-face ((t (:foreground "#0fdfaf"))))
  '(font-lock-variable-name-face ((((class color) (background dark)) (:foreground "#c8d4ec"))))
  '(font-lock-warning-face ((t (:foreground "#504038"))))
- '(highlight ((t (:foreground "navyblue" :background "#darkseagreen2"))))
+ '(highlight ((t (:foreground "navyblue"))))
  '(lsp-face-highlight-read ((t (:background "dimgrey" :foreground "#d3b58d"))))
  '(lsp-face-highlight-textual ((t (:background "dimgrey" :foreground "#d3b58d"))))
  '(lsp-face-highlight-write ((t (:background "dimgrey" :foreground "#d3b58d"))))
@@ -188,8 +188,8 @@
  '(widget-field-face ((t (:foreground "white"))))
  '(widget-single-line-field-face ((t (:foreground "darkgray"))) t))
 
-(set-cursor-color "lightgreen")
-(set-background-color "#072626")
+(set-cursor-color "lightgreen")  ;; #90ee90
+(set-background-color "#0a2626")
 
 (set-face-foreground 'font-lock-builtin-face "lightgreen")
 ;;
