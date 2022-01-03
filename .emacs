@@ -558,7 +558,6 @@ If point was already at that position, move point to beginning of line."
   (set-mark)
   (exchange-point-and-mark)
   )
-
 (global-set-key (kbd "C-c <backspace>") 'ah/delete-surround)
 
 (defun ah/comment-or-uncomment-region-or-line ()
@@ -627,6 +626,11 @@ If point was already at that position, move point to beginning of line."
     (while (< (current-column) fill-column)
       (insert-char char)));;)
 
+
+(defun my/insert-date ()
+  "Insert current date at point."
+  (interactive)
+  (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; custom keybindings
