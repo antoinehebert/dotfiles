@@ -42,6 +42,10 @@
 ;; (scroll-bar-mode -1)
 (setq initial-scratch-message "")
 
+;; Prefer horizontal split.
+(setq split-height-threshold nil)
+(setq split-width-threshold 240) ;; 120 * 2
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hooks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -120,14 +124,14 @@
     use-package
     ))
 
-(defun ah/install-packages (packages)
+(defun my/install-packages (packages)
   "You know... install PACKAGES."
   (interactive)
   (dolist (p packages)
     (unless (package-installed-p p)
       (package-refresh-contents)
       (package-install p))))
-(ah/install-packages user-packages)
+(my/install-packages user-packages)
 
 ;; Mac specific packages
 (when (eq system-type 'darwin)
@@ -135,7 +139,7 @@
     '(
       exec-path-from-shell))
 
-  (ah/install-packages user-packages-mac)
+  (my/install-packages user-packages-mac)
 
   (exec-path-from-shell-initialize)
 
@@ -145,9 +149,6 @@
 
 (wrap-region-global-mode t)
 
-;; themes that are not packages are in this folder.
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-
 ;; theme and font
 ;; (load-theme 'material-light t)
 ;; (load-theme 'gruvbox t)
@@ -155,46 +156,8 @@
 ;; (load-theme 'naysayer t)
 
 (when (eq system-type 'darwin)
-  ;; (set-face-attribute 'default nil :font "source code pro-16")
   (set-face-attribute 'default nil :font "consolas-18")
-  ;; (set-face-attribute 'default nil :font "IBM Plex Mono-18")
   )
-
-;;
-;; START THEME -- Figure out a way of doing this properly...
-;;
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:foreground "#d3b58d" :background "#0a2626"))))
- ;; '(column-enforce-face ((t (:foreground "IndianRed2"))))
- '(custom-group-tag-face ((t (:underline t :foreground "lightblue"))) t)
- '(custom-variable-tag-face ((t (:underline t :foreground "lightblue"))) t)
- '(font-lock-builtin-face ((t nil)))
- '(font-lock-comment-face ((t (:foreground "#3fdf1f"))))
- '(font-lock-funciton-name-face ((((class color) (background dark)) (:foreground "white"))))
- '(font-lock-keyword-face ((t (:foreground "white"))))
- '(font-lock-string-face ((t (:foreground "#0fdfaf"))))
- '(font-lock-variable-name-face ((((class color) (background dark)) (:foreground "#c8d4ec"))))
- '(font-lock-warning-face ((t (:foreground "#504038"))))
- '(highlight ((t (:foreground "navyblue"))))
- '(lsp-face-highlight-read ((t (:background "dimgrey" :foreground "#d3b58d"))))
- '(lsp-face-highlight-textual ((t (:background "dimgrey" :foreground "#d3b58d"))))
- '(lsp-face-highlight-write ((t (:background "dimgrey" :foreground "#d3b58d"))))
- '(mode-line ((t (:inverse-video t))))
- '(region ((t (:background "blue"))))
- '(widget-field-face ((t (:foreground "white"))))
- '(widget-single-line-field-face ((t (:foreground "darkgray"))) t))
-
-(set-cursor-color "lightgreen")  ;; #90ee90
-(set-background-color "#0a2626")
-
-(set-face-foreground 'font-lock-builtin-face "lightgreen")
-;;
-;; END THEME
-;;
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c c") 'mc/edit-lines)
@@ -277,6 +240,13 @@
   )
 (use-package lsp-ui
   :ensure t)
+
+;; (use-package tree-sitter
+;;   :ensure t
+;;   :config
+;;   (require 'tree-sitter-langs)
+;;   (global-tree-sitter-mode)
+;;   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
 (use-package buffer-move
   :ensure t
@@ -548,7 +518,7 @@ If point was already at that position, move point to beginning of line."
 (global-set-key [end] 'move-end-of-line)
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
 
-(defun ah/delete-surround ()
+(defun my/delete-surround ()
   "Delete one char on each side of the region."
   (interactive)
   (kill-region (region-beginning) (region-end))
@@ -558,9 +528,9 @@ If point was already at that position, move point to beginning of line."
   (set-mark)
   (exchange-point-and-mark)
   )
-(global-set-key (kbd "C-c <backspace>") 'ah/delete-surround)
+(global-set-key (kbd "C-c <backspace>") 'my/delete-surround)
 
-(defun ah/comment-or-uncomment-region-or-line ()
+(defun my/comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if there's no active region."
   (interactive)
   (let (beg end)
@@ -569,7 +539,7 @@ If point was already at that position, move point to beginning of line."
       (setq beg (line-beginning-position) end (line-end-position)))
     (comment-or-uncomment-region beg end)))
 
-(global-set-key (kbd "M-;") 'ah/comment-or-uncomment-region-or-line)
+(global-set-key (kbd "M-;") 'my/comment-or-uncomment-region-or-line)
 
 (defun my/ticket-description-to-branch-name (start end)
   "Turn START to END selection to git branch name."
@@ -611,7 +581,7 @@ If point was already at that position, move point to beginning of line."
   (interactive "P")
   (browse-url
    (concat
-    "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
+    "http://www-.google.com/search?ie=utf-8&oe=utf-8&q="
     (unless arg
         (concat (car (split-string (format "%s" major-mode) "-")) " "))
     (if mark-active
