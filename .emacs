@@ -116,7 +116,7 @@
     git-gutter
     json-mode
     projectile
-    projectile-rails
+    ;; projectile-rails
     ;; flymake-ruby ;; not necessary with lsp-mode?
     ;; column-enforce-mode
     idle-highlight-mode
@@ -135,13 +135,10 @@
 
 ;; Mac specific packages
 (when (eq system-type 'darwin)
-  (defvar user-packages-mac
-    '(
-      exec-path-from-shell))
-
-  (my/install-packages user-packages-mac)
-
-  (exec-path-from-shell-initialize)
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (exec-path-from-shell-initialize))
 
   ;; swap cmd and option
   (setq mac-option-modifier 'super)
@@ -159,6 +156,13 @@
   (set-face-attribute 'default nil :font "consolas-18")
   )
 
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
+;; for doom-modeline
+(use-package all-the-icons
+  :ensure t)
+
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c c") 'mc/edit-lines)
 (global-set-key (kbd "C-c n") 'mc/mark-next-like-this)
@@ -174,13 +178,17 @@
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
-(setq projectile-keymap-prefix (kbd "C-c C-p"))
-(add-hook 'ruby-mode-hook 'projectile-mode)
-(add-hook 'projectile-mode-hook 'projectile-rails-on)
 (add-hook 'ruby-mode-hook #'rubocop-mode)
 (setq ruby-insert-encoding-magic-comment nil)
 
+
+;; projectile
+;; (setq projectile-keymap-prefix (kbd "C-c C-p"))
+;; (add-hook 'ruby-mode-hook 'projectile-mode)
+;; (add-hook 'projectile-mode-hook 'projectile-rails-on)
+;; (setq ruby-insert-encoding-magic-comment nil)
 (global-set-key (kbd "C-c p") 'projectile-find-file)
+
 
 ;; (require 'flymake-ruby)
 ;; (add-hook 'ruby-mode-hook 'flymake-ruby-load)
@@ -232,12 +240,15 @@
   (add-hook 'ruby-mode-hook #'lsp)
   (add-hook 'js-mode-hook #'lsp)
   (add-hook 'js2-mode-hook #'lsp)
+  (add-hook 'web-mode-hook #'lsp)
 
   ;; perf tweaks based on https://emacs-lsp.github.io/lsp-mode/page/performance/
   (setq gc-cons-threshold 100000000)
   (setq read-process-output-max (* 1024 1024)) ;; 1mb
   (setq lsp-idle-delay 0.500)
+  ;; (setq lsp-eslint-auto-fix-on-save t)
   )
+
 (use-package lsp-ui
   :ensure t)
 
@@ -305,48 +316,52 @@
   (setq inferior-lisp-program "sbcl"))
 
 ;; Stolen from https://github.com/codesuki/add-node-modules-path/blob/master/add-node-modules-path.el
-(defun my/add-node-modules-path ()
-  "Search the current buffer's parent directories for `node_modules/.bin`.
-If it's found, then add it to `exec-path`."
-  (interactive)
-  (let* ((root (locate-dominating-file
-                (or (buffer-file-name) default-directory)
-                "node_modules"))
-         (path (and root
-                    (expand-file-name "node_modules/.bin/" root))))
-    (if root
-        (progn
-          (make-local-variable 'exec-path)
-          (add-to-list 'exec-path path)
-          (message (concat "added " path  " to exec-path")))
-      (message (concat "node_modules not found in " root)))))
+;; (defun my/add-node-modules-path ()
+;;   "Search the current buffer's parent directories for `node_modules/.bin`.
+;; If it's found, then add it to `exec-path`."
+;;   (interactive)
+;;   (let* ((root (locate-dominating-file
+;;                 (or (buffer-file-name) default-directory)
+;;                 "node_modules"))
+;;          (path (and root
+;;                     (expand-file-name "node_modules/.bin/" root))))
+;;     (if root
+;;         (progn
+;;           (make-local-variable 'exec-path)
+;;           (add-to-list 'exec-path path)
+;;           (message (concat "added " path  " to exec-path")))
+;;       (message (concat "node_modules not found in " root)))))
 
-(eval-after-load 'web-mode
-  '(add-hook 'web-mode-hook 'my/add-node-modules-path))
+;; (eval-after-load 'web-mode
+;;   '(add-hook 'web-mode-hook 'my/add-node-modules-path))
 
-(eval-after-load 'js-mode
-  '(add-hook 'js-mode-hook 'my/add-node-modules-path))
+;; (eval-after-load 'js-mode
+;;   '(add-hook 'js-mode-hook 'my/add-node-modules-path))
 
-(eval-after-load 'js2-mode
-  '(add-hook 'js2-mode-hook 'my/add-node-modules-path))
+;; (eval-after-load 'js2-mode
+;;   '(add-hook 'js2-mode-hook 'my/add-node-modules-path))
 
 ;; disable jshint since we prefer eslint checking
 ;; (setq-default flycheck-disabled-checkers
 ;;               (append flycheck-disabled-checkers '(javascript-jshint)))
 
-;; use eslint javascript files
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-(flycheck-add-mode 'javascript-eslint 'js2-mode)
-(flycheck-add-mode 'javascript-eslint 'js-mode)
+;; ;; use eslint javascript files
+;; (flycheck-add-mode 'javascript-eslint 'web-mode)
+;; (flycheck-add-mode 'javascript-eslint 'js2-mode)
+;; (flycheck-add-mode 'javascript-eslint 'js-mode)
 
 (defun my/eslint-fix ()
   "Format the current file with ESLint."
   (interactive)
-  (let ((eslint "eslint"))
-    (if (executable-find eslint)
-        (progn (call-process eslint nil "*ESLint Errors*" nil "--fix" buffer-file-name)
-               (revert-buffer t t t))
-      (message (concat eslint " not found.")))))
+  ;; (let ((eslint "eslint"))
+  ;;   (if (executable-find eslint)
+  ;;       (progn
+  (message (concat "eslint --fixing the file " (buffer-file-name)))
+  ;; (call-process eslint nil "*ESLint Errors*" nil "--fix" buffer-file-name)
+  (call-process "npx" nil "*ESLint Errors*" nil "eslint" "--fix" (buffer-file-name))
+  ;; (shell-command (concat "npx eslint --fix " (buffer-file-name)) nil "*eslint errors*")
+  (revert-buffer t t t))
+;; (message (concat eslint " not found.")))))
 
 (defun my/eslint-fix-after-save-hook ()
   "After save hook for my/eslint-fix."
@@ -363,7 +378,6 @@ If it's found, then add it to `exec-path`."
 
 (eval-after-load 'web2-mode
   '(add-hook 'web2-mode-hook 'my/eslint-fix-after-save-hook))
-
 
 (require 'rbenv)
 (global-rbenv-mode)
@@ -581,7 +595,7 @@ If point was already at that position, move point to beginning of line."
   (interactive "P")
   (browse-url
    (concat
-    "http://www-.google.com/search?ie=utf-8&oe=utf-8&q="
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
     (unless arg
         (concat (car (split-string (format "%s" major-mode) "-")) " "))
     (if mark-active
@@ -625,4 +639,3 @@ If point was already at that position, move point to beginning of line."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; END
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-

@@ -1,26 +1,29 @@
 [user]
-	name = Antoine Hebert
+	name = Antoine Hébert
 	email = hebert.antoine@gmail.com
 [alias]
         st = status
         co = checkout
         ci = commit
         br = branch
-        last = log -1 --stat HEAD
+        sw = switch
+        last = log -1 --stat -p HEAD
 #        lg = log --oneline --graph --decorate --color
         lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(cyan)- %an%C(reset)%C(auto)%d%C(reset)'
         lol = log --graph --decorate --color
         df = diff
         dff = diff --no-prefix -U10000
         dt = difftool -d
+        d = difftool -d master...
+        poule = pull
 [push]
 	default = simple
 [diff]
   colorMoved = default
-	guitool = meld
+	guitool = kdiff3
 	tool = kdiff3
 [merge]
-	tool = kdiff3
+	tool = meld
 [mergetool "kdiff3"]
 	path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
 	trustExitCode = false
@@ -36,3 +39,13 @@
 	clean = git-lfs clean -- %f
 [difftool "meld"]
 	path = /Applications/Meld.app/Contents/MacOS/Meld
+[difftool "vscode"]
+    	cmd = "/Applications/Visual Studio Code.app" --wait --diff $LOCAL $REMOTE
+[difftool "p4merge"]
+    	# path = /Applications/p4merge.app/Contents/Resources/launchp4merge
+    	path = /Applications/p4merge.app/Contents/MacOS/p4merge
+	trustExitCode = false
+[mergetool "p4merge"]
+	# path = /Applications/p4merge.app/Contents/Resources/launchp4merge
+	path = /Applications/p4merge.app/Contents/MacOS/p4merge
+	trustExitCode = false
