@@ -1,3 +1,9 @@
 # dotfiles
 
-Only the emacs stuff is updated these days, I'm no longer using the bash.
+## Emacs
+
+Copy `.emacs` and `.emacs.d` to `$HOME`.
+
+## Zsh
+
+Source `.zsh_t00ny` in `~/.zshrc`.

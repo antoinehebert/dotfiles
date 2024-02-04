@@ -1,0 +1,61 @@
+autoload -U add-zsh-hook
+
+export EDITOR='emacs'
+
+alias ll="ls -la"
+alias dc="docker compose"
+alias cdx="cd ~/src/maintainx"
+alias cdm="cd ~/src/metal"
+alias tx="tmux -CC attach"
+alias mysqlx="mysql -h localhost -P 3308 -u base_user -pbase_password  --protocol=tcp  base_dev"
+alias mysql_gpl="mysql -h localhost -P 3308 -u gpl_user -pgpl_password  --protocol=tcp  gpl_dev"
+alias mongom="cdm && docker-compose exec -it mongo mongosh metal"
+alias y="yarn"
+alias yt="yarn test"
+alias yb="yarn build"
+alias ybc="yarn build:clean"
+alias ys="yarn start:dev"
+alias yall="yarn workspaces foreach -ptiv"
+alias yw="yarn workspace"
+alias icat="kitty +kitten icat"
+
+gifify () {
+  ffmpeg -i $1 -vf "fps=10,scale=1024:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $1.gif
+}
+
+# Auto switch node version when there's a .nvmrc file.
+load-nvmrc() {
+  local node_version="$(nvm version)"
+  local nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use
+    fi
+  elif [ "$node_version" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+
+# Rust
+source "$HOME/.cargo/env"
+
+# Create a new directory and enter it
+unalias md
+md() {
+   mkdir -p "$1" && cd "$1"
+}
+
+# appended by /opt/homebrew/opt/fzf/install
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+ export FZF_DEFAULT_COMMAND='rg --files'
+
+# bind Ctrl-U to same thing as bash
+bindkey \^U backward-kill-line
