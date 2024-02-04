@@ -1,21 +1,10 @@
-; custom-set-variables was added by Custom.
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
-'(ansi-color-names-vector
-  ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"])
-'(org-export-backends (quote (ascii html icalendar latex md)))
-(put 'downcase-region 'disabled nil)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq c-basic-offset 4)
 (setq c-default-style (quote ((c++-mode . "bsd") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
 (setq column-number-mode t)
 (setq compile-command "make -j5")
-(setq css-indent-offset 4)
-(setq jsx-indent-level 4)
 
 (delete-selection-mode 1)
 (electric-indent-mode 1)
@@ -26,14 +15,16 @@
 (ido-mode 1)
 ;; note we use setq-default
 (setq-default indent-tabs-mode nil)
-(setq js-indent-level 4)
+(setq css-indent-offset 2)
+(setq js-indent-level 2)
+(setq jsx-indent-level 2)
 (setq mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
 (setq python-continuation-offset 4)
 (setq python-indent 4)
 (setq sgml-basic-offset 4)
 (show-paren-mode 1)
-(setq standard-indent 4)
-(setq tab-width 4)
+(setq standard-indent 2)
+(setq tab-width 2)
 (setq inhibit-startup-message t) ;; stop showing emacs welcome screen
 (setq case-fold-search t)   ; make searches case insensitive
 (put 'upcase-region 'disabled nil)
@@ -49,10 +40,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hooks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;; spelling
-(setq flyspell-issue-message-flag nil)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
-(add-hook 'text-mode-hook 'flyspell-mode)
+(use-package flyspell
+  :init
+  (setq flyspell-issue-message-flag nil)
+  :config
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  (add-hook 'text-mode-hook 'flyspell-mode))
 
 (add-hook 'prog-mode-hook 'git-gutter-mode)
 
@@ -60,7 +57,9 @@
 ;; (add-hook 'prog-mode-hook 'column-enforce-mode)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode) ;; native alternative to column-enforce.
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun my-org-mode-hook()
   (org-indent-mode t)
   (visual-line-mode t)
@@ -68,9 +67,6 @@
   (local-set-key (kbd "M-<return>") 'org-meta-return) ; Disable custom "open line" command
   )
 (add-hook 'org-mode-hook 'my-org-mode-hook)
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
 (setq org-ellipsis "⤵")
 (setq org-bullets-bullet-list '("•"))
 
@@ -96,32 +92,20 @@
 
 (defvar user-packages
   '(
-    haskell-mode
     wrap-region
-    monokai-theme
-    gruvbox-theme
-    multiple-cursors
-    company ;; auto-complete
     yaml-mode
     flx-ido
-    linum-relative
     flycheck
-    rbenv
     rubocop
-    expand-region
-    rainbow-delimiters
-    material-theme
     org-bullets
-    magit
     git-gutter
     json-mode
-    projectile
+    ;; projectile
     ;; projectile-rails
     ;; flymake-ruby ;; not necessary with lsp-mode?
     ;; column-enforce-mode
     idle-highlight-mode
-    rg ;; ripgrep
-    use-package
+    gruber-darker-theme
     ))
 
 (defun my/install-packages (packages)
@@ -146,34 +130,76 @@
 
 (wrap-region-global-mode t)
 
-;; theme and font
+;; theme
 ;; (load-theme 'material-light t)
 ;; (load-theme 'gruvbox t)
 ;; (load-theme 'wilmersdorf t) ;; no package for this one, don't push this to the repo unless we add themes folder there too.
 ;; (load-theme 'naysayer t)
 
-(when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :font "consolas-18")
-  )
+(defun set-font ()
+  (let ((font "Iosevka-18"))
+    (set-face-attribute 'default nil :font font)
+    (set-frame-font font nil t)))
+(set-font)
 
-(use-package doom-modeline
+(load-theme 'tone-blow t)
+
+(use-package multiple-cursors
   :ensure t
-  :init (doom-modeline-mode 1))
-;; for doom-modeline
-(use-package all-the-icons
-  :ensure t)
+  :bind (("C-c c" . mc/edit-lines)
+         ("C-c n" . mc/mark-next-like-this)
+         ("C-c N" . mc/skip-to-next-like-this)
+         ("C-c m" . mc/mark-all-like-this)
+         ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
 
-(require 'multiple-cursors)
-(global-set-key (kbd "C-c c") 'mc/edit-lines)
-(global-set-key (kbd "C-c n") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c N") 'mc/skip-to-next-like-this)
-;; (global-set-key (kbd "C-c p") 'mc/mark-previous-like-this)
-;; (global-set-key (kbd "C-c P") 'mc/skip-to-previous-like-this)
-(global-set-key (kbd "C-c m") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+(use-package company
+  :ensure t
+  ;; removed global mode in favor of using use-package :hook section...
+  ;; :config (global-company-mode t)
+  )
+(add-hook 'prog-mode-hook 'company-mode)
 
-(add-hook 'after-init-hook 'global-company-mode) ; this or auto-complete?
-(setq company-dabbrev-downcase nil)
+
+
+(use-package treesit
+  ;; :ensure t
+  ;; :commands (treesit-install-language-grammar nf/treesit-install-all-languages)
+  :init
+  (setq treesit-language-source-alist
+        '(
+          ;; (bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
+          ;; (c . ("https://github.com/tree-sitter/tree-sitter-c"))
+          ;; (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
+          ;; (css . ("https://github.com/tree-sitter/tree-sitter-css"))
+          ;; (cmake . ("https://github.com/uyha/tree-sitter-cmake"))
+          ;; (go . ("https://github.com/tree-sitter/tree-sitter-go"))
+          ;; (html . ("https://github.com/tree-sitter/tree-sitter-html"))
+          ;; (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
+          ;; (json . ("https://github.com/tree-sitter/tree-sitter-json"))
+          ;; (julia . ("https://github.com/tree-sitter/tree-sitter-julia"))
+          ;; (lua . ("https://github.com/Azganoth/tree-sitter-lua"))
+          ;; (make . ("https://github.com/alemuller/tree-sitter-make"))
+          ;; (ocaml . ("https://github.com/tree-sitter/tree-sitter-ocaml" "master" "ocaml/src"))
+          ;; (python . ("https://github.com/tree-sitter/tree-sitter-python"))
+          ;; (php . ("https://github.com/tree-sitter/tree-sitter-php"))
+          (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src"))
+          (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src"))
+          ;; (ruby . ("https://github.com/tree-sitter/tree-sitter-ruby"))
+          ;; (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
+          ;; ;; (sql . ("https://github.com/m-novikov/tree-sitter-sql"))
+          ;; (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
+          ;; (zig . ("https://github.com/GrayJack/tree-sitter-zig"))
+          ))
+  ;; :config
+  ;; (defun nf/treesit-install-all-languages ()
+  ;;   "Install all languages specified by `treesit-language-source-alist'."
+  ;;   (interactive)
+  ;;   (let ((languages (mapcar 'car treesit-language-source-alist)))
+  ;;     (dolist (lang languages)
+  ;;       (treesit-install-language-grammar lang)
+  ;;       (message "`%s' parser was installed." lang)
+  ;;       (sit-for 0.75)))))
+  )
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
@@ -181,17 +207,21 @@
 (add-hook 'ruby-mode-hook #'rubocop-mode)
 (setq ruby-insert-encoding-magic-comment nil)
 
-
 ;; projectile
 ;; (setq projectile-keymap-prefix (kbd "C-c C-p"))
 ;; (add-hook 'ruby-mode-hook 'projectile-mode)
 ;; (add-hook 'projectile-mode-hook 'projectile-rails-on)
 ;; (setq ruby-insert-encoding-magic-comment nil)
-(global-set-key (kbd "C-c p") 'projectile-find-file)
-
+;; (global-set-key (kbd "C-c p") 'projectile-find-file)
 
 ;; (require 'flymake-ruby)
 ;; (add-hook 'ruby-mode-hook 'flymake-ruby-load)
+
+(use-package fzf
+  :ensure t
+  :bind (("C-c p" . fzf-git-files)))
+
+
 
 (require 'flx-ido)
 (ido-mode 1)
@@ -201,20 +231,15 @@
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
 
-;; use the right modes for javascript files
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(setq js2-strict-trailing-comma-warning nil)
-
 (use-package flycheck
   :ensure t
-  :init (global-flycheck-mode)
-  :config (setq-default flycheck-disabled-checkers '(ruby-reek)))
+  :init (global-flycheck-mode))
 
-(use-package try
-  :commands try)
-
+;;
+;; rust
+;;
 (use-package rust-mode
+  :ensure t
   :defer t
   :mode "\\.rs\\'"
   :config (setq rust-format-on-save t))
@@ -232,80 +257,100 @@
   (with-eval-after-load 'rust-mode
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
-;; Language Server Protocol
-(use-package lsp-mode
+;;
+;; typescript
+;;
+(use-package typescript-ts-mode
   :ensure t
+  :hook ((typescript-ts-mode . eglot-ensure)
+         (tsx-ts-mode . eglot-ensure)
+         ;; (typescript-ts-mode . company-mode))
+         )
+  :mode (("\\.ts\\'" . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode))
   :init
-  (add-hook 'rust-mode-hook #'lsp)
-  (add-hook 'ruby-mode-hook #'lsp)
-  (add-hook 'js-mode-hook #'lsp)
-  (add-hook 'js2-mode-hook #'lsp)
-  (add-hook 'web-mode-hook #'lsp)
+  (setq typescript-indent-level 2))
 
-  ;; perf tweaks based on https://emacs-lsp.github.io/lsp-mode/page/performance/
-  (setq gc-cons-threshold 100000000)
-  (setq read-process-output-max (* 1024 1024)) ;; 1mb
-  (setq lsp-idle-delay 0.500)
-  ;; (setq lsp-eslint-auto-fix-on-save t)
-  )
+(defun my/eslint-fix ()
+  "Format the current file with ESLint."
+  (interactive)
+  ;; (let ((eslint "eslint"))
+  ;;   (if (executable-find eslint)
+  ;;       (progn
+  (message (concat "eslint --fix the file " (buffer-file-name)))
+  ;; (call-process eslint nil "*ESLint Errors*" nil "--fix" buffer-file-name)
+  (call-process "npx" nil "*ESLint Errors*" nil "eslint" "--fix" (buffer-file-name))
+  ;; (shell-command (concat "npx eslint --fix " (buffer-file-name)) nil "*eslint errors*")
+  (revert-buffer t t t))
+;; (message (concat eslint " not found.")))))
 
-(use-package lsp-ui
+;; (defun my/eslint-fix-after-save-hook ()
+;;   "After save hook for my/eslint-fix."
+;;   (add-hook 'after-save-hook 'my/eslint-fix nil t))
+
+;; (eval-after-load 'js-mode
+;;   '(add-hook 'js-mode-hook 'my/eslint-fix-after-save-hook))
+
+;; (eval-after-load 'js2-mode
+;;   '(add-hook 'js2-mode-hook 'my/eslint-fix-after-save-hook))
+
+;; (eval-after-load 'web-mode
+;;   '(add-hook 'web-mode-hook 'my/eslint-fix-after-save-hook))
+
+;; (eval-after-load 'web2-mode
+;;   '(add-hook 'web2-mode-hook 'my/eslint-fix-after-save-hook))
+
+;; (eval-after-load 'typescript-mode
+;;   '(add-hook 'typescript-mode-hook 'my/eslint-fix-after-save-hook))
+
+;; (eval-after-load 'typescript-ts-mode
+;;   '(add-hook 'typescript-ts-mode-hook 'my/eslint-fix-after-save-hook))
+
+;; Shows available keybindings in context
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
+(use-package prettier-js
   :ensure t)
+  ;; :hook ((js2-mode . prettier-js-mode)
+  ;;        (web-mode . prettier-js-mode))
+  ;; :commands prettier-js-mode)
+(defun enable-minor-mode (my-pair)
+  "Enable minor mode if filename match the regexp.  MY-PAIR is a cons cell (regexp . minor-mode)."
+  (if (buffer-file-name)
+      (if (string-match (car my-pair) buffer-file-name)
+      (funcall (cdr my-pair)))))
+(add-hook 'web-mode-hook #'(lambda ()
+                            (enable-minor-mode
+                             '("\\.jsx?\\'" . prettier-js-mode))
+                            (enable-minor-mode
+                             '("\\.tsx?\\'" . prettier-js-mode))))
 
-;; (use-package tree-sitter
-;;   :ensure t
-;;   :config
-;;   (require 'tree-sitter-langs)
-;;   (global-tree-sitter-mode)
-;;   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
 
 (use-package buffer-move
   :ensure t
-  :init
-  (global-set-key (kbd "C-c <S-up>")     'buf-move-up)
-  (global-set-key (kbd "C-c <S-down>")   'buf-move-down)
-  (global-set-key (kbd "C-c <S-left>")   'buf-move-left)
-  (global-set-key (kbd "C-c <S-right>")  'buf-move-right))
+  :bind (
+  ("C-c <S-up>"    . buf-move-up)
+  ("C-c <S-down>"  . buf-move-down)
+  ("C-c <S-left>"  . buf-move-left)
+  ("C-c <S-right>" . buf-move-right)))
 
 
-(require 'windmove)
-;; (windmove-default-keybindings 'shift) ;; make S-<arrow> move windows
-(global-set-key (kbd "C-c <up>")    'windmove-up)
-(global-set-key (kbd "C-c <down>")  'windmove-down)
-(global-set-key (kbd "C-c <left>")  'windmove-left)
-(global-set-key (kbd "C-c <right>") 'windmove-right)
+(use-package windmove
+  :ensure t
+  :bind (
+         ("C-c <up>"    . windmove-up)
+         ("C-c <down>"  . windmove-down)
+         ("C-c <left>"  . windmove-left)
+         ("C-c <right>" . windmove-right)))
 
-;; (use-package dumb-jump
-;;   :ensure t
-;;   :bind (("C-c j o" . dumb-jump-go-other-window)
-;;          ("C-c j j" . dumb-jump-go)
-;;          ;; ("M-." . dumb-jump-go)
-;;          ("C-c j p" . dumb-jump-go-prompt)
-;;          ("C-c j b" . dumb-jump-back)
-;;          ;; ("m->" . dumb-jump-back)
-;;          )
-;;   :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
-;;   :ensure)
 
 (use-package yasnippet
   :ensure t
   :init (yas-global-mode 1))
-
-
-;; (use-package ivy
-;;   :ensure t
-;;   :config (setq ivy-use-virtual-buffers t
-;;                 ivy-count-format "%d/%d ")
-;;   :bind (("C-s" . 'swiper)
-;;          ("M-x" . 'counsel-M-x)
-;;          ("C-x C-f" . 'counsel-find-file)
-;;          ("C-x b" . 'ivy-switch-buffer)
-;;          ;; ("<f1> f" . 'counsel-describe-function)
-;;          ;; ("<f1> v" . 'counsel-describe-variable)
-;;          ;; ("<f1> l" . 'counsel-find-library)
-;;          ;; ("<f2> i" . 'counsel-info-lookup-symbol)
-;;          ;; ("<f2> u" . 'counsel-unicode-char)
-;;          ))
 
 ;;
 ;; Lisp
@@ -315,100 +360,51 @@
   :init
   (setq inferior-lisp-program "sbcl"))
 
-;; Stolen from https://github.com/codesuki/add-node-modules-path/blob/master/add-node-modules-path.el
-;; (defun my/add-node-modules-path ()
-;;   "Search the current buffer's parent directories for `node_modules/.bin`.
-;; If it's found, then add it to `exec-path`."
-;;   (interactive)
-;;   (let* ((root (locate-dominating-file
-;;                 (or (buffer-file-name) default-directory)
-;;                 "node_modules"))
-;;          (path (and root
-;;                     (expand-file-name "node_modules/.bin/" root))))
-;;     (if root
-;;         (progn
-;;           (make-local-variable 'exec-path)
-;;           (add-to-list 'exec-path path)
-;;           (message (concat "added " path  " to exec-path")))
-;;       (message (concat "node_modules not found in " root)))))
-
-;; (eval-after-load 'web-mode
-;;   '(add-hook 'web-mode-hook 'my/add-node-modules-path))
-
-;; (eval-after-load 'js-mode
-;;   '(add-hook 'js-mode-hook 'my/add-node-modules-path))
-
-;; (eval-after-load 'js2-mode
-;;   '(add-hook 'js2-mode-hook 'my/add-node-modules-path))
-
-;; disable jshint since we prefer eslint checking
-;; (setq-default flycheck-disabled-checkers
-;;               (append flycheck-disabled-checkers '(javascript-jshint)))
-
-;; ;; use eslint javascript files
-;; (flycheck-add-mode 'javascript-eslint 'web-mode)
-;; (flycheck-add-mode 'javascript-eslint 'js2-mode)
-;; (flycheck-add-mode 'javascript-eslint 'js-mode)
-
-(defun my/eslint-fix ()
-  "Format the current file with ESLint."
-  (interactive)
-  ;; (let ((eslint "eslint"))
-  ;;   (if (executable-find eslint)
-  ;;       (progn
-  (message (concat "eslint --fixing the file " (buffer-file-name)))
-  ;; (call-process eslint nil "*ESLint Errors*" nil "--fix" buffer-file-name)
-  (call-process "npx" nil "*ESLint Errors*" nil "eslint" "--fix" (buffer-file-name))
-  ;; (shell-command (concat "npx eslint --fix " (buffer-file-name)) nil "*eslint errors*")
-  (revert-buffer t t t))
-;; (message (concat eslint " not found.")))))
-
-(defun my/eslint-fix-after-save-hook ()
-  "After save hook for my/eslint-fix."
-  (add-hook 'after-save-hook 'my/eslint-fix nil t))
-
-(eval-after-load 'js-mode
-  '(add-hook 'js-mode-hook 'my/eslint-fix-after-save-hook))
-
-(eval-after-load 'js2-mode
-  '(add-hook 'js2-mode-hook 'my/eslint-fix-after-save-hook))
-
-(eval-after-load 'web-mode
-  '(add-hook 'web-mode-hook 'my/eslint-fix-after-save-hook))
-
-(eval-after-load 'web2-mode
-  '(add-hook 'web2-mode-hook 'my/eslint-fix-after-save-hook))
-
-(require 'rbenv)
-(global-rbenv-mode)
-(global-set-key (kbd "C-c r") 'global-rbenv-mode)
+(use-package add-node-modules-path
+  :ensure t
+  :config
+  '(add-hook 'js-mode-hook #'add-node-modules-path)
+  '(add-hook 'js2-mode-hook #'add-node-modules-path)
+  '(add-hook 'web-mode-hook #'add-node-modules-path)
+  '(add-hook 'web2-mode-hook #'add-node-modules-path))
 
 ;; expand-region
-(require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
-(global-set-key (kbd "C-+") 'er/contract-region)
+(use-package expand-region
+  :bind
+  ("C-=" . er/expand-region)
+  ("C-+" . er/contract-region))
 
-;; (require 'rainbow-delimiters)
-;; (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
+;; (use-package treemacs
+;;   :ensure t)
 
 (add-hook 'prog-mode-hook 'idle-highlight-mode)
 
-(require 'rg)
-;; if you want default ripgrep (rg) keybindings just run this: `(rg-enable-default-bindings)`
+(use-package rg
+  :ensure t)
+
+(use-package magit
+  :ensure t
+  :bind (("C-c s" . magit-status)
+         ("C-c b" . magit-blame)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido customization
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Display ido results vertically, rather than horizontally
-;; (setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
-;; (defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
-;; (add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
-;; ;; use up and down arrows in vertical mode
-;; (defun ido-define-keys ()
-;;   (define-key ido-completion-map [down] 'ido-next-match)
-;;   (define-key ido-completion-map [up] 'ido-prev-match))
-;; (add-hook 'ido-setup-hook 'ido-define-keys)
+; Display ido results vertically, rather than horizontally
+(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
+(defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
+(add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
+;; use up and down arrows in vertical mode
+(defun ido-define-keys ()
+  (define-key ido-completion-map [down] 'ido-next-match)
+  (define-key ido-completion-map [up] 'ido-prev-match))
+(add-hook 'ido-setup-hook 'ido-define-keys)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Customize buffer names
@@ -423,7 +419,6 @@
   "Frame title is current buffer full path."
   (setq frame-title-format
         '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-
 (add-hook 'after-init-hook 'my/set-frame-title)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -567,14 +562,14 @@ If point was already at that position, move point to beginning of line."
     (setq str (replace-regexp-in-string "^\\(.*\\)\\]\\]:" "\\1:" str))
     ;; extract ticket number
     (setq ticket (car (split-string str "[: ]")))
-    (setq str (mapconcat 'identity (cdr (split-string str " ")) "_"))
-    (setq str (replace-regexp-in-string "[^0-9a-zA-Z]+" "_" str))
+    (setq str (mapconcat 'identity (cdr (split-string str " ")) "-"))
+    (setq str (replace-regexp-in-string "[^0-9a-zA-Z]+" "-" str))
     ;; (setq str (replace-regexp-in-string "^_*" "" str))
     ;; (setq str (replace-regexp-in-string "_*$" "" str))
-    (setq str (string-remove-prefix "_" str))
-    (setq str (string-remove-suffix "_" str))
+    (setq str (string-remove-prefix "-" str))
+    (setq str (string-remove-suffix "-" str))
     (setq str (downcase str))
-    (kill-new (concat "ticket/" ticket "_" str))))
+    (kill-new (concat "tony/" ticket "_" str))))
 
 (defun sort-words (reverse beg end)
   "Sort words in region alphabetically, in REVERSE if negative.
@@ -620,14 +615,10 @@ If point was already at that position, move point to beginning of line."
 ;; custom keybindings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (global-set-key (kbd "<f5>") 'sort-lines)
-;; (global-set-key (kbd "C-c g s") 'magit-status)
-(global-set-key (kbd "C-c s") 'magit-status)
-;; (global-set-key (kbd "C-c g g") 'magit-dispatch-popup)
-(global-set-key (kbd "C-c b") 'magit-blame)
 ;; (global-set-key (kbd "C-c g n") 'git-gutter:next-diff)
-(global-set-key (kbd "<f5>") 'git-gutter:next-hunk)
+(global-set-key (kbd "M-<f5>") 'git-gutter:next-hunk)
 ;; (global-set-key (kbd "C-c g p") 'git-gutter:previous-diff)
-(global-set-key (kbd "S-<f5>") 'git-gutter:previous-hunk)
+(global-set-key (kbd "M-S-<f5>") 'git-gutter:previous-hunk)
 (global-set-key (kbd "C-c d") 'git-gutter:popup-hunk)
 ;; (global-set-key (kbd "C-c f") 'rgrep)
 ;; (global-set-key (kbd "C-c f") 'ripgrep-regexp)
